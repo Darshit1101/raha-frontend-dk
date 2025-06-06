@@ -7,6 +7,7 @@ import c1 from "../assets/c1.svg";
 import c2 from "../assets/c2.svg";
 import c3 from "../assets/c3.svg";
 import c4 from "../assets/c4.svg";
+import { api } from "axiosApi";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -36,12 +37,21 @@ const Contact = () => {
     }));
   };
 
+  //handle add contact api
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError("");
 
     try {
+      const response = await api.post("/addContact", {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        inquiryType: formData.inquiryType,
+        message: formData.message,
+      });
+      console.log('reas==========>',response)
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Form submitted:", formData);
