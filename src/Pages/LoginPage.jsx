@@ -46,13 +46,17 @@ export default function LoginPage() {
       console.log("Login successful:", response.data);
       // Store token in localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem('email', response.data?.user?.email);
+      localStorage.setItem('userID', response.data?.user?.userId);
+      localStorage.setItem('username', response.data?.user?.username);
+      localStorage.setItem('fullName', response.data?.user?.fullName);
       // Clear form fields
       setState({
         email: "",
         password: "",
       });
       // Optionally redirect or show a success message
-      window.location.href = "/"; // Redirect to home page
+      window.location.href = "/"; 
     } catch (error) {
       console.error("Login failed:", error);
       // Handle error (e.g., show a message to the user)
