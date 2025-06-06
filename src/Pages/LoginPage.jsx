@@ -50,6 +50,7 @@ export default function LoginPage() {
       localStorage.setItem('userID', response.data?.user?.userId);
       localStorage.setItem('username', response.data?.user?.username);
       localStorage.setItem('fullName', response.data?.user?.fullName);
+      
       // Clear form fields
       setState({
         email: "",
