@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import blacklogo from "../assets/blacklogo.svg";
 import log1 from "../assets/log1.png";
@@ -12,16 +12,54 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { api } from "axiosApi";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const sliderImages = [log1, log2, log3, log4];
+
+  //=================================================================================================================================
+  const [state, setState] = useState({
+    fullName: "",
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
+
+  //handle signup
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/register", {
+        fullName: state.fullName,
+        username: state.username,
+        email: state.email,
+        password: state.password,
+      });
+      console.log("Signup successful:", response.data);
+      // Clear form fields
+      setState({
+        fullName: "",
+        username: "",
+        email: "",
+        password: "",
+      });
+      // Optionally redirect or show a success message
+    } catch (error) {
+      console.error("Signup failed:", error.response?.data || error.message);
+      // Optionally show an error message to the user
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
@@ -43,6 +81,8 @@ export default function SignupPage() {
           <form className="mt-8 space-y-6">
             <div className="space-y-4">
               <input
+                value={state.fullName}
+                onChange={(e) => changeNameValue({ fullName: e.target.value })}
                 id="fullName"
                 name="fullName"
                 type="text"
@@ -51,6 +91,8 @@ export default function SignupPage() {
                 className="w-full border border-[#7F614F] rounded-md px-4 py-3 text-gray-900 placeholder-[#7F614F] focus:border-[#7F614F] focus:outline-none focus:ring-[#7F614F]"
               />
               <input
+                value={state.username}
+                onChange={(e) => changeNameValue({ username: e.target.value })}
                 id="username"
                 name="username"
                 type="text"
@@ -59,6 +101,8 @@ export default function SignupPage() {
                 className="w-full border border-[#7F614F] rounded-md px-4 py-3 text-gray-900 placeholder-[#7F614F] focus:border-[#7F614F] focus:outline-none focus:ring-[#7F614F]"
               />
               <input
+                value={state.email}
+                onChange={(e) => changeNameValue({ email: e.target.value })}
                 id="email"
                 name="email"
                 type="email"
@@ -68,11 +112,13 @@ export default function SignupPage() {
               />
               <div className="relative">
                 <input
+                  value={state.password}
+                  onChange={(e) =>
+                    changeNameValue({ password: e.target.value })
+                  }
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full border border-[#7F614F] rounded-md px-4 py-3 text-gray-900 placeholder-[#7F614F] focus:border-[#7F614F] focus:outline-none focus:ring-[#7F614F]"
                   placeholder="Password"
@@ -92,6 +138,7 @@ export default function SignupPage() {
               </div>
             </div>
             <button
+              onClick={handleSignup}
               type="submit"
               className="group relative flex w-full justify-center bg-[#7F614F] hover:bg-white hover:text-[#7F614F] text-white rounded-md border px-4 py-3 text-sm font-medium"
             >
