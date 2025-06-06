@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { api } from "axiosApi";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +25,7 @@ export default function SignupPage() {
   const sliderImages = [log1, log2, log3, log4];
 
   //=================================================================================================================================
+  const navigate = useNavigate();
   const [state, setState] = useState({
     fullName: "",
     username: "",
@@ -47,6 +49,7 @@ export default function SignupPage() {
         password: state.password,
       });
       console.log("Signup successful:", response.data);
+      navigate("/login");
       // Clear form fields
       setState({
         fullName: "",

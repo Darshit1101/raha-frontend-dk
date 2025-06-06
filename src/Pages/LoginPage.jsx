@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import blacklogo from "../assets/blacklogo.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,6 +12,7 @@ import log1 from "../assets/log1.png";
 import log2 from "../assets/log2.png";
 import log3 from "../assets/log3.png";
 import log4 from "../assets/log4.png";
+import { api } from "axiosApi";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +23,42 @@ export default function LoginPage() {
   };
 
   const sliderImages = [log1, log2, log3, log4];
+
+  //=======================================================================================================================================================
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
+
+  //handle login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/login", {
+        email: state.email,
+        password: state.password,
+      });
+      console.log("Login successful:", response.data);
+      // Store token in localStorage
+      localStorage.setItem("token", response.data.token);
+      // Clear form fields
+      setState({
+        email: "",
+        password: "",
+      });
+      // Optionally redirect or show a success message
+      window.location.href = "/"; // Redirect to home page
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle error (e.g., show a message to the user)
+      alert("Login failed. Please check your credentials.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
@@ -45,6 +82,8 @@ export default function LoginPage() {
               {/* Email Input */}
               <div>
                 <input
+                  value={state.email}
+                  onChange={(e) => changeNameValue({ email: e.target.value })}
                   id="email"
                   name="email"
                   type="email"
@@ -57,11 +96,13 @@ export default function LoginPage() {
               {/* Password Input */}
               <div className="relative">
                 <input
+                  value={state.password}
+                  onChange={(e) =>
+                    changeNameValue({ password: e.target.value })
+                  }
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full border border-[#7F614F] rounded-md px-4 py-3 text-gray-900 placeholder-[#7F614F]"
                   placeholder="Password"
@@ -95,6 +136,7 @@ export default function LoginPage() {
             {/* Login Button */}
             <div>
               <button
+                onClick={handleLogin}
                 type="submit"
                 className="group relative flex w-full justify-center bg-[#7F614F] rounded-md border hover:bg-white hover:text-[#7F614F] text-white px-4 py-3 text-sm font-medium"
               >
