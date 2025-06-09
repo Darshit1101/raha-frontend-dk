@@ -168,50 +168,38 @@ const SingleProduct = (props) => {
           </div>
 
           {/* Product Title */}
-          <h1 className="text-2xl font-bold mb-3">Revitalizing Hair Oil</h1>
+          <h1 className="text-2xl font-bold mb-3">{state.SinProduct?.name}</h1>
 
           {/* Product Description */}
-          <p className="text-gray-600 mb-6">
-            Our Revitalizing Hair Oil is a powerful blend of traditional
-            Ayurvedic herbs and oils designed to nourish your scalp and
-            strengthen hair from the roots. This lightweight, non-greasy formula
-            absorbs quickly to deliver essential nutrients directly to your hair
-            follicles.
-          </p>
+          <p className="text-gray-600 mb-6">{state.SinProduct?.description}</p>
 
           {/* Price */}
           <div className="flex items-center mb-6">
-            <span className="text-2xl font-bold mr-2">Rs. 29,000.00</span>
+            <span className="text-2xl font-bold mr-2">
+              Rs. {state.SinProduct?.discountedPrice}
+            </span>
             <span className="text-gray-500 line-through text-sm">
-              Rs. 30,000.00
+              Rs. {state.SinProduct?.actualPrice}
             </span>
           </div>
 
           {/* Benefits */}
           <div className="mb-6">
             <h3 className="font-medium mb-2">Benefits:</h3>
-            <ul className="space-y-1">
-              <li className="flex items-start">
-                <span className="text-[#7f614f] mr-2">•</span>
-                <span>Promotes hair growth and reduces hair fall</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#7f614f] mr-2">•</span>
-                <span>Nourishes dry scalp and prevents dandruff</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#7f614f] mr-2">•</span>
-                <span>Strengthens hair roots and prevents breakage</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#7f614f] mr-2">•</span>
-                <span>Adds natural shine without greasiness</span>
-              </li>
-            </ul>
+            {state.SinProduct?.benefits?.length > 0 && (
+              <ul className="space-y-1">
+                {state.SinProduct.benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-[#7f614f] mr-2">•</span>
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Variant Selection */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h3 className="font-medium mb-2">Variant:</h3>
             <div className="flex space-x-4">
               <label className="flex items-center">
@@ -235,7 +223,7 @@ const SingleProduct = (props) => {
                 <span>For Dandruff Control</span>
               </label>
             </div>
-          </div>
+          </div> */}
 
           {/* Size Selection */}
           <div className="mb-4">
@@ -249,9 +237,9 @@ const SingleProduct = (props) => {
                   onChange={() => setSize("100ml")}
                   className="mr-2"
                 />
-                <span>100ml - ₹399</span>
+                <span>{state.SinProduct?.size}</span>
               </label>
-              <label className="flex items-center">
+              {/* <label className="flex items-center">
                 <input
                   type="radio"
                   name="size"
@@ -260,7 +248,7 @@ const SingleProduct = (props) => {
                   className="mr-2"
                 />
                 <span>200ml - ₹699</span>
-              </label>
+              </label> */}
             </div>
           </div>
 
