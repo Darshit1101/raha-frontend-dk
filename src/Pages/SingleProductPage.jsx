@@ -8,7 +8,7 @@ const SingleProductPage = () => {
   const { productId } = useParams(); // Extract productId from URL
 
   const [state, setState] = useState({
-    SingleProduct: [],
+    SinProduct: [],
   });
 
   //set data in state
@@ -21,7 +21,7 @@ const SingleProductPage = () => {
     const fetchSingleProduct = async () => {
       try {
         const response = await api.get(`/getProduct/${productId}`);
-        changeNameValue({ SingleProduct: response.data.data });
+        changeNameValue({ SinProduct: response.data.data });
       } catch (error) {
         console.error("Error fetching single product:", error);
       }

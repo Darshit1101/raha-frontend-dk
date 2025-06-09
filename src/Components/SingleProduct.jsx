@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Star,
   ShoppingBag,
@@ -15,13 +15,26 @@ import sp2 from "../assets/sp2.png";
 import sp3 from "../assets/sp3.png";
 import sp4 from "../assets/sp4.png";
 import sc1 from "../assets/sc1.png";
+
 const SingleProduct = (props) => {
   const { state, changeNameValue } = props;
 
   // State for product images
-
   const [mainImage, setMainImage] = useState(sp1);
-  const thumbnails = [sp1, sp2, sp3, sp4];
+
+  //get product images from state
+  const thumbnails =
+    state.SinProduct.images?.map(
+      (image) => `${import.meta.env.VITE_API_IMAGE_URL}${image.image_path}`
+    ) || [];
+
+  // Set main image from first product image when component loads
+  useEffect(() => {
+    const firstImage = state?.SinProduct?.images?.[0]?.image_path;
+    if (firstImage) {
+      setMainImage(`${import.meta.env.VITE_API_IMAGE_URL}${firstImage}`);
+    }
+  }, [state.SinProduct]);
 
   // State for product options
   const [variant, setVariant] = useState("dry");
@@ -115,35 +128,34 @@ const SingleProduct = (props) => {
         <div>
           <div className="mb-4 rounded-lg overflow-hidden">
             <img
-              src={
-                state.SingleProduct.images?.[0]?.image_path
-                  ? `${import.meta.env.VITE_API_IMAGE_URL}${
-                      state.SingleProduct.images[0].image_path
-                    }`
-                  : "/placeholder.svg"
-              }
+              src={mainImage || "/placeholder.svg"}
               alt="Revitalizing Hair Oil"
               className="w-full md:h-[798px] h-[400px] object-contain"
             />
           </div>
           <div className="grid grid-cols-4 gap-2">
-            {thumbnails.map((thumb, index) => (
-              <div
-                key={index}
-                className={` rounded-lg overflow-hidden cursor-pointer ${
-                  mainImage === thumb
-                    ? "border-[#7f614f] border-2"
-                    : "border-gray-200"
-                }`}
-                onClick={() => setMainImage(thumb)}
-              >
-                <img
-                  src={thumb || "/placeholder.svg"}
-                  alt={`Product thumbnail ${index + 1}`}
-                  className="w-full md:h-[160px] h-[85px] object-contain"
-                />
-              </div>
-            ))}
+            {thumbnails.map(
+              (thumb, index) => (
+                console.log(thumb),
+                (
+                  <div
+                    key={index}
+                    className={` rounded-lg overflow-hidden cursor-pointer ${
+                      mainImage === thumb
+                        ? "border-[#7f614f] border-2"
+                        : "border-gray-200"
+                    }`}
+                    onClick={() => setMainImage(thumb)}
+                  >
+                    <img
+                      src={thumb || "/placeholder.svg"}
+                      alt={`Product thumbnail ${index + 1}`}
+                      className="w-full md:h-[160px] h-[85px] object-contain"
+                    />
+                  </div>
+                )
+              )
+            )}
           </div>
         </div>
 
