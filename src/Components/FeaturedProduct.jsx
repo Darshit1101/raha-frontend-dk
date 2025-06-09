@@ -70,10 +70,8 @@ const FeaturedProduct = (props) => {
     window.scrollTo(0, 0); // Scroll to top of window
   };
 
-  console.log("FeaturedProduct state:", state.AllProducts);
   const allProducts = Array.isArray(state.AllProducts) ? state.AllProducts : [];
   const featuredProducts = allProducts.slice(-4);
-  console.log("Featured Products:", featuredProducts);
 
   return (
     <div className="relative">

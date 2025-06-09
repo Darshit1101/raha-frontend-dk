@@ -93,7 +93,6 @@ const HairCare = (props) => {
           {/* Product Grid - 4 columns on desktop, 2 on mobile */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-4">
             {featuredProducts.map((product) => (
-              console.log("Product:", product),
               <div key={product.productId} className="flex">
                 <ProductCard product={product} />
               </div>
