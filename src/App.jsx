@@ -25,7 +25,8 @@ function App() {
         <Route path="/about" element={<OurStory />} />
         <Route path="/badlav" element={<Badlav />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/products" element={<SingleProductPage />} />
+        <Route path="/products/:productId" element={<SingleProductPage />} />
+        {/* <Route path="/products" element={<SingleProductPage />} /> */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkoutpage" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />

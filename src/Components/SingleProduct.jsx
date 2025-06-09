@@ -15,7 +15,9 @@ import sp2 from "../assets/sp2.png";
 import sp3 from "../assets/sp3.png";
 import sp4 from "../assets/sp4.png";
 import sc1 from "../assets/sc1.png";
-const SingleProduct = () => {
+const SingleProduct = (props) => {
+  const { state, changeNameValue } = props;
+
   // State for product images
 
   const [mainImage, setMainImage] = useState(sp1);
@@ -113,7 +115,13 @@ const SingleProduct = () => {
         <div>
           <div className="mb-4 rounded-lg overflow-hidden">
             <img
-              src={mainImage || "/placeholder.svg"}
+              src={
+                state.SingleProduct.images?.[0]?.image_path
+                  ? `${import.meta.env.VITE_API_IMAGE_URL}${
+                      state.SingleProduct.images[0].image_path
+                    }`
+                  : "/placeholder.svg"
+              }
               alt="Revitalizing Hair Oil"
               className="w-full md:h-[798px] h-[400px] object-contain"
             />

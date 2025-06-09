@@ -17,7 +17,7 @@ const ProductCard = ({ product }) => {
 
   // Handle card click to navigate to product page
   const handleCardClick = () => {
-    navigate(`/products`);
+    navigate(`/products/${product.productId}`);
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);

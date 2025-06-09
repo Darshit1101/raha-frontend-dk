@@ -9,7 +9,7 @@ const ShopPage = () => {
     AllProducts: [],
     AllCategories: [],
   });
-  
+
   //set data in state
   const changeNameValue = useCallback((obj) => {
     setState((prevState) => ({ ...prevState, ...obj }));
