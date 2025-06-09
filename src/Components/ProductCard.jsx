@@ -16,7 +16,6 @@ const ProductCard = ({ product }) => {
   };
 
   // Handle card click to navigate to product page
-  // Handle card click to navigate to product page
   const handleCardClick = () => {
     navigate(`/products`);
     setTimeout(() => {
@@ -25,7 +24,7 @@ const ProductCard = ({ product }) => {
   };
 
   // Generate star rating
-  const renderStars = () => {
+  const   renderStars = () => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
@@ -58,7 +57,13 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
       <div className="relative overflow-hidden pt-[100%]">
         <img
-          src={product.image || "/placeholder.svg"}
+          src={
+            product.images?.[0]?.image_path
+              ? `${import.meta.env.VITE_API_IMAGE_URL}${
+                  product.images[0].image_path
+                }`
+              : "/placeholder.svg"
+          }
           alt={product.name}
           className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
         />
@@ -72,14 +77,16 @@ const ProductCard = ({ product }) => {
         </h3>
 
         {/* Product Subtitle */}
-        <p className="text-sm text-gray-500 mb-1">{product.subtitle}</p>
+        <p className="text-sm text-gray-500 mb-1">{product.description}</p>
+        {/* <p className="text-sm text-gray-500 mb-1">{product.subtitle}</p> */}
 
         {/* Volume */}
         <p className="text-sm text-gray-500 mb-2">{product.volume}</p>
 
         {/* Price */}
         <p className="text-base md:text-lg font-bold mb-2">
-          ₹{product.price.toFixed(2)}
+          ₹{product.actualPrice}
+          {/* ₹{product.price.toFixed(2)} */}
         </p>
 
         {/* Rating */}

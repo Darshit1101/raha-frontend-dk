@@ -4,12 +4,37 @@ import Hero from "../Components/Hero";
 import InstaPostWithStyles from "../Components/InstaPost";
 import Quality from "../Components/Quality";
 import Testimonial from "../Components/Testimonial";
+import { api } from "axiosApi";
+import { useEffect, useCallback, useState } from "react";
 
 const HomePage = () => {
+  const [state, setState] = useState({
+    AllProducts: "",
+  });
+
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
+
+  //load products from the API when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/getAllProducts");
+        changeNameValue({ AllProducts: response.data.data });
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <Hero />
-      <FeaturedProduct />
+      <FeaturedProduct state={state} changeNameValue={changeNameValue} />
       <HairCare />
       <Quality />
       <Testimonial />
