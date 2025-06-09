@@ -2,18 +2,24 @@
 
 import { useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import sc1 from "../assets/sc1.png";
+import { api } from "axiosApi";
 
 const OurProduct = (props) => {
   const { state, changeNameValue } = props;
 
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState({ name: "all" });
+  console.log("activeCategory=============>", activeCategory);
 
   // const categories = ["all", "hair oil", "shampoo", "hair pack"];
-  const categories = ["all", ...state.AllCategories.map((cat) => cat.name)];
+  const categories = [
+    { name: "all" },
+    ...state.AllCategories.map((cat) => cat),
+  ];
+  console.log("categories=============>", categories);
 
   // const allProducts = [
   //   {
@@ -74,9 +80,11 @@ const OurProduct = (props) => {
   const allProducts = allProductsArray.slice(-4);
 
   const filteredProducts =
-    activeCategory === "all"
+    activeCategory.name === "all"
       ? allProducts
-      : allProducts.filter((product) => product.category === activeCategory);
+      : allProducts.filter(
+          (product) => product.category === activeCategory.name
+        );
 
   const handleNavigateHome = () => {
     navigate("/");
@@ -113,7 +121,7 @@ const OurProduct = (props) => {
                     : "border-gray-300 text-gray-400"
                 }`}
               >
-                {cat.toUpperCase()}
+                {cat.name?.toUpperCase()}
               </button>
             ))}
           </div>
