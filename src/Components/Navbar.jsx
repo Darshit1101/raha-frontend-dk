@@ -111,9 +111,12 @@ const Navbar = () => {
             <li className="relative">
               <div
                 className="flex items-center py-3 cursor-pointer hover:text-[#7f614f] transition-colors"
-                onMouseEnter={() => !isMobile && setShowDropdown(true)}
-                onMouseLeave={() => !isMobile && setShowDropdown(false)}
-                onClick={() => isMobile && setShowDropdown(!showDropdown)}
+                // onMouseEnter={() => !isMobile && setShowDropdown(true)}
+                // onMouseLeave={() => !isMobile && setShowDropdown(false)}
+                // onClick={() => isMobile && setShowDropdown(!showDropdown)}
+                onClick={() => {
+                    navigate("/shop/allproducts");
+                }}
               >
                 Shop
                 {/* <ChevronDown size={16} className="ml-1" /> */}
