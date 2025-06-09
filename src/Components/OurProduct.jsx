@@ -11,16 +11,14 @@ const OurProduct = (props) => {
   const { state, changeNameValue } = props;
 
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState({ name: "all" });
+  const [categoryName, setcategoryName] = useState({ name: "all" });
   const [categoryId, setCategoryId] = useState("");
-  console.log("activeCategory=============>", activeCategory);
 
   // const categories = ["all", "hair oil", "shampoo", "hair pack"];
   const categories = [
     { name: "all" },
     ...state.AllCategories.map((cat) => cat),
   ];
-  console.log("categories=============>", categories);
 
   // const allProducts = [
   //   {
@@ -81,11 +79,7 @@ const OurProduct = (props) => {
   const allProducts = allProductsArray.slice(-4);
 
   const filteredProducts =
-    activeCategory.name === "all"
-      ? allProducts
-      : allProducts.filter(
-          (product) => product.category === activeCategory.name
-        );
+    categoryName.name === "all" ? allProducts : allProducts;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +99,16 @@ const OurProduct = (props) => {
     setCategoryId(cat.categoryId);
     if (cat.name === "all") {
       setCategoryId(""); // clear categoryId to skip API
+      const fetchData = async () => {
+        try {
+          const response = await api.get("/getAllProducts");
+          changeNameValue({ AllProducts: response.data.data });
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+
+      fetchData();
     } else {
       setCategoryId(cat.categoryId);
     }
@@ -137,13 +141,13 @@ const OurProduct = (props) => {
           <div className="flex flex-wrap gap-4 mb-8">
             {categories.map((cat) => (
               <button
-                key={cat}
+                key={cat.categoryId}
                 onClick={() => {
-                  setActiveCategory(cat);
+                  setcategoryName(cat);
                   handleCategory(cat);
                 }}
                 className={`rounded-full border px-6 py-2 text-sm font-medium ${
-                  activeCategory === cat
+                  categoryName === cat
                     ? "border-[#7f614f] text-[#7f614f]"
                     : "border-gray-300 text-gray-400"
                 }`}
@@ -156,7 +160,7 @@ const OurProduct = (props) => {
           {/* Product Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-4">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="flex">
+              <div key={product.productId} className="flex">
                 <ProductCard product={product} />
               </div>
             ))}
@@ -179,7 +183,7 @@ const OurProduct = (props) => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 md:p-16 md:gap-4">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="flex">
+          <div key={product.productId} className="flex">
             <ProductCard product={product} />
           </div>
         ))}
