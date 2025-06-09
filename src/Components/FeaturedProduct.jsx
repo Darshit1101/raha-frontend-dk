@@ -64,6 +64,7 @@ const FeaturedProduct = (props) => {
   //     isBestSeller: false,
   //   },
   // ];
+  
   // Handle View All clickx`x`
   const handleViewAll = () => {
     navigate("/shop/allproducts");

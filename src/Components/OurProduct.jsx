@@ -6,66 +6,73 @@ import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import sc1 from "../assets/sc1.png";
 
-const OurProduct = () => {
+const OurProduct = (props) => {
+  const { state, changeNameValue } = props;
+
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("all");
 
   const categories = ["all", "hair oil", "shampoo", "hair pack"];
 
-  const allProducts = [
-    {
-      id: "1",
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      image: "/rice-water-shampoo.png",
-      isBestSeller: true,
-      category: "shampoo",
-    },
-    {
-      id: "2",
-      slug: "sheer-sun-fluid",
-      name: "SHEER SUN FLUID WITH SPF 50 | PA++++",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "50g",
-      price: 1750.0,
-      rating: 5,
-      reviews: 51,
-      image: "/hibiscus-shampoo.png",
-      isBestSeller: true,
-      category: "hair oil",
-    },
-    {
-      id: "3",
-      slug: "ultra-rich-body-milk",
-      name: "ULTRA RICH BODY MILK SOUNDARYA 24K GOLD",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "2 Size Available",
-      price: 1975.0,
-      rating: 5,
-      reviews: 51,
-      image: "/hair-pack-purple.png",
-      isBestSeller: false,
-      category: "hair pack",
-    },
-    {
-      id: "4",
-      slug: "ultra-rich-body-milk-indian-rose",
-      name: "ULTRA-RICH BODY MILK INDIAN ROSE ABSOLUTE",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1776.0,
-      rating: 5,
-      reviews: 51,
-      image: "/hair-pack-green.png",
-      isBestSeller: false,
-      category: "shampoo",
-    },
-  ];
+  // const allProducts = [
+  //   {
+  //     id: "1",
+  //     slug: "balancing-night-cream",
+  //     name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "130ml",
+  //     price: 1934.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     image: "/rice-water-shampoo.png",
+  //     isBestSeller: true,
+  //     category: "shampoo",
+  //   },
+  //   {
+  //     id: "2",
+  //     slug: "sheer-sun-fluid",
+  //     name: "SHEER SUN FLUID WITH SPF 50 | PA++++",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "50g",
+  //     price: 1750.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     image: "/hibiscus-shampoo.png",
+  //     isBestSeller: true,
+  //     category: "hair oil",
+  //   },
+  //   {
+  //     id: "3",
+  //     slug: "ultra-rich-body-milk",
+  //     name: "ULTRA RICH BODY MILK SOUNDARYA 24K GOLD",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "2 Size Available",
+  //     price: 1975.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     image: "/hair-pack-purple.png",
+  //     isBestSeller: false,
+  //     category: "hair pack",
+  //   },
+  //   {
+  //     id: "4",
+  //     slug: "ultra-rich-body-milk-indian-rose",
+  //     name: "ULTRA-RICH BODY MILK INDIAN ROSE ABSOLUTE",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "130ml",
+  //     price: 1776.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     image: "/hair-pack-green.png",
+  //     isBestSeller: false,
+  //     category: "shampoo",
+  //   },
+  // ];
+  
+  const allProductsArray = Array.isArray(state.AllProducts)
+    ? state.AllProducts
+    : [];
+  const allProducts = allProductsArray.slice(-4);
 
   const filteredProducts =
     activeCategory === "all"
