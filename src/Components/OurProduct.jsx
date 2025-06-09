@@ -12,6 +12,7 @@ const OurProduct = (props) => {
 
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState({ name: "all" });
+  const [categoryId, setCategoryId] = useState("");
   console.log("activeCategory=============>", activeCategory);
 
   // const categories = ["all", "hair oil", "shampoo", "hair pack"];
@@ -86,6 +87,29 @@ const OurProduct = (props) => {
           (product) => product.category === activeCategory.name
         );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!categoryId) return; // skip API if "all"
+      try {
+        const response = await api.get(`/getProductsByCategory/${categoryId}`);
+        changeNameValue({ AllProducts: response.data.data });
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  }, [categoryId]);
+
+  const handleCategory = (cat) => {
+    setCategoryId(cat.categoryId);
+    if (cat.name === "all") {
+      setCategoryId(""); // clear categoryId to skip API
+    } else {
+      setCategoryId(cat.categoryId);
+    }
+  };
+
   const handleNavigateHome = () => {
     navigate("/");
     window.scrollTo(0, 0);
@@ -114,7 +138,10 @@ const OurProduct = (props) => {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  handleCategory(cat);
+                }}
                 className={`rounded-full border px-6 py-2 text-sm font-medium ${
                   activeCategory === cat
                     ? "border-[#7f614f] text-[#7f614f]"

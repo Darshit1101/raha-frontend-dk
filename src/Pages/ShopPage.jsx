@@ -5,11 +5,11 @@ import { api } from "axiosApi";
 import { useEffect, useCallback, useState } from "react";
 
 const ShopPage = () => {
-   const [state, setState] = useState({
+  const [state, setState] = useState({
     AllProducts: [],
     AllCategories: [],
   });
-  
+
   //set data in state
   const changeNameValue = useCallback((obj) => {
     setState((prevState) => ({ ...prevState, ...obj }));
@@ -46,7 +46,7 @@ const ShopPage = () => {
   return (
     <>
       <ShopHero />
-      <OurProduct state={state} changeNameValue={changeNameValue}/>
+      <OurProduct state={state} changeNameValue={changeNameValue} />
       <Quality />
     </>
   );
