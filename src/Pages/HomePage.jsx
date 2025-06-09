@@ -9,7 +9,7 @@ import { useEffect, useCallback, useState } from "react";
 
 const HomePage = () => {
   const [state, setState] = useState({
-    AllProducts: "",
+    AllProducts: [],
   });
 
   //set data in state

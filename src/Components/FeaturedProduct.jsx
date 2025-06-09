@@ -64,14 +64,14 @@ const FeaturedProduct = (props) => {
   //     isBestSeller: false,
   //   },
   // ];
-  
+
   // Handle View All clickx`x`
   const handleViewAll = () => {
     navigate("/shop/allproducts");
     window.scrollTo(0, 0); // Scroll to top of window
   };
 
-  const allProducts = Array.isArray(state.AllProducts) ? state.AllProducts : [];
+  const allProducts =  state.AllProducts;
   const featuredProducts = allProducts.slice(-4);
 
   return (

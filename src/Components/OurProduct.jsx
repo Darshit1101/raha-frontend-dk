@@ -12,7 +12,8 @@ const OurProduct = (props) => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const categories = ["all", "hair oil", "shampoo", "hair pack"];
+  // const categories = ["all", "hair oil", "shampoo", "hair pack"];
+  const categories = ["all", ...state.AllCategories.map((cat) => cat.name)];
 
   // const allProducts = [
   //   {
@@ -68,10 +69,8 @@ const OurProduct = (props) => {
   //     category: "shampoo",
   //   },
   // ];
-  
-  const allProductsArray = Array.isArray(state.AllProducts)
-    ? state.AllProducts
-    : [];
+
+  const allProductsArray = state.AllProducts;
   const allProducts = allProductsArray.slice(-4);
 
   const filteredProducts =
