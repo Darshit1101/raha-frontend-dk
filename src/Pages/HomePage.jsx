@@ -35,7 +35,7 @@ const HomePage = () => {
     <>
       <Hero />
       <FeaturedProduct state={state} changeNameValue={changeNameValue} />
-      <HairCare />
+      <HairCare state={state} changeNameValue={changeNameValue}/>
       <Quality />
       <Testimonial />
       <InstaPostWithStyles />
