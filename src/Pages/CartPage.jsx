@@ -47,7 +47,7 @@ export default function CartPage() {
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
-    (total, item) => total + item?.product?.actualPrice * item.quantity,
+    (total, item) => total + item?.product?.discountedPrice * item.quantity,
     0
   );
 
@@ -165,7 +165,7 @@ export default function CartPage() {
                     </p>
                     <p className="font-medium mt-2">
                       {" "}
-                      ₹{Number(item?.product?.actualPrice).toFixed(2)}
+                      ₹{Number(item?.product?.discountedPrice).toFixed(2)}
                     </p>
 
                     <div className="flex items-center mt-2 border rounded-md w-fit">
@@ -199,7 +199,7 @@ export default function CartPage() {
                     <div className="flex justify-between items-center mt-4">
                       <p className="font-medium">
                         Total: ₹
-                        {(item?.product?.actualPrice * item.quantity).toFixed(
+                        {(item?.product?.discountedPrice * item.quantity).toFixed(
                           2
                         )}
                       </p>
@@ -268,11 +268,11 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div className="col-span-1 text-center">
-                    ₹{Number(item?.product?.actualPrice).toFixed(2)}
+                    ₹{Number(item?.product?.discountedPrice).toFixed(2)}
                   </div>
                   <div className="col-span-1 text-center font-medium">
                     ₹
-                    {Number(item?.product?.actualPrice * item.quantity).toFixed(
+                    {Number(item?.product?.discountedPrice * item.quantity).toFixed(
                       2
                     )}
                   </div>

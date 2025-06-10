@@ -69,7 +69,7 @@ export default function CheckoutPage() {
   // ]);
 
   const subtotal = cartItems.reduce(
-    (total, item) => total + item?.product?.actualPrice * item.quantity,
+    (total, item) => total + item?.product?.discountedPrice * item.quantity,
     0
   );
   const shipping = 20;
@@ -129,8 +129,8 @@ export default function CheckoutPage() {
       items: cartItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
-        price: item.product.actualPrice,
-        totalAmount: item.quantity * item.product.actualPrice,
+        price: item.product.discountedPrice,
+        totalAmount: item.quantity * item.product.discountedPrice,
       })),
     };
 
@@ -418,7 +418,7 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                   <p className="text-sm font-medium">
-                    ₹{item.product.actualPrice}
+                    ₹{item.product.discountedPrice}
                   </p>
                 </div>
               ))}

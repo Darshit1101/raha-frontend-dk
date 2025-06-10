@@ -107,7 +107,7 @@ const ProductCard = ({ product }) => {
 
         {/* Price */}
         <p className="text-base md:text-lg font-bold mb-2">
-          ₹{product.actualPrice}
+          ₹{product.discountedPrice}
           {/* ₹{product.price.toFixed(2)} */}
         </p>
 
