@@ -78,6 +78,7 @@ const SingleProduct = (props) => {
 
   // Handle add to wishlist
   const handleAddToWishlist = () => {
+    navigate("/wishlist");
     console.log("Added to wishlist:", {
       product: "Revitalizing Hair Oil",
     });
