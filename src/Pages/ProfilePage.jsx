@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect,useCallback  } from "react";
 import {
   User,
   ClipboardList,
@@ -49,6 +49,15 @@ export default function UserProfile() {
       email: "jane.smith@example.com",
     },
   ]);
+
+  const [state, setState] = useState({
+    OrderDetail: [],
+  });
+  console.log('state.orderDetail====>',state.OrderDetail)
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
 
   const [newAddress, setNewAddress] = useState({
     name: "",
@@ -268,7 +277,7 @@ export default function UserProfile() {
     const fetchOrderByUserId = async () => {
       try {
         const response = await api.get(`/getOrderByUserId/${userID}`);
-        console.log("Add to cart response:", response.data.data);
+        changeNameValue({ OrderDetail: response.data.data });
         // Optionally show a success message or update cart state here
       } catch (error) {
         console.error(
