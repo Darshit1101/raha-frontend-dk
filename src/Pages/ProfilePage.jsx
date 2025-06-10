@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   User,
   ClipboardList,
@@ -12,6 +12,7 @@ import {
   MapPin,
   Edit2,
 } from "lucide-react";
+import { api } from "axiosApi";
 
 export default function UserProfile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentAddressId, setCurrentAddressId] = useState(null);
   const fileInputRef = useRef(null);
+  let userID = JSON.parse(localStorage.getItem("userID"));
 
   // Sample addresses data
   const [addresses, setAddresses] = useState([
@@ -260,6 +262,24 @@ export default function UserProfile() {
       },
     },
   ];
+
+  //call api order by userId
+  useEffect(() => {
+    const fetchOrderByUserId = async () => {
+      try {
+        const response = await api.get(`/getOrderByUserId/${userID}`);
+        console.log("Add to cart response:", response.data.data);
+        // Optionally show a success message or update cart state here
+      } catch (error) {
+        console.error(
+          "Error adding to cart:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    fetchOrderByUserId();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-20 py-6">
