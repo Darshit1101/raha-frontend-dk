@@ -56,6 +56,8 @@ export default function CartPage() {
   const updateQuantity = (cartId, newQuantity) => {
     if (newQuantity < 1) return;
 
+    updateCartItem(cartId, newQuantity); // Call API to update quantity
+
     setCartItems(
       cartItems.map((item) =>
         item.cartId === cartId ? { ...item, quantity: newQuantity } : item
@@ -111,6 +113,22 @@ export default function CartPage() {
     } catch (error) {
       console.error(
         "Error removing item from cart:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  //update quantity api call
+  const updateCartItem = async (cartId, quantity) => {
+    try {
+      const response = await api.put(`/updateCartItem/${cartId}`, {
+        quantity,
+      });
+      console.log("Item updated successfully:", response.data);
+      // Optionally show a success message or update cart state here
+    } catch (error) {
+      console.error(
+        "Error updating item in cart:",
         error.response?.data || error.message
       );
     }
