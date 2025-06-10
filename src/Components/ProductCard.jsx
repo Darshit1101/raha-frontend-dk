@@ -7,12 +7,14 @@ import { Star, ShoppingBag } from "lucide-react";
 const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  let userID = JSON.parse(localStorage.getItem("userID"));
 
   // Handle add to bag click
   const handleAddToBag = (e) => {
     e.stopPropagation(); // Prevent navigation to product page
     alert(`${product.name} added to your bag!`);
-    navigate('/cart')
+    AddToCartAPI();
+    navigate("/cart");
   };
 
   // Handle card click to navigate to product page
@@ -21,6 +23,25 @@ const ProductCard = ({ product }) => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
+  };
+
+  //add to cart api call
+  const AddToCartAPI = async () => {
+    let obj = {
+      userId: userID,
+      productId: product.productId,
+      quantity: 1,
+    };
+    try {
+      const response = await api.post("/addToCart", obj);
+      console.log("Add to cart response:", response.data.data);
+      // Optionally show a success message or update cart state here
+    } catch (error) {
+      console.error(
+        "Error adding to cart:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   // Generate star rating
