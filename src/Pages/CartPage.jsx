@@ -164,7 +164,6 @@ export default function CartPage() {
             {/* Cart Items */}
             {cartItems.map(
               (item) => (
-                console.log("item", item.product?.images?.[0]?.image_path),
                 (
                   <div
                     key={item.cartId}
