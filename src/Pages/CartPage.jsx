@@ -65,6 +65,7 @@ export default function CartPage() {
 
   // Handle item removal
   const removeItem = (cartId) => {
+    deleteCartItem(cartId); 
     setCartItems(cartItems.filter((item) => item.cartId !== cartId));
   };
 
@@ -100,6 +101,20 @@ export default function CartPage() {
 
     fetchCart();
   }, []);
+
+  //delete cart item api call
+  const deleteCartItem = async (cartId) => {
+    try {
+      const response = await api.delete(`/deleteCartItem/${cartId}`);
+      console.log("Item removed successfully:", response.data);
+      // Optionally show a success message or update cart state here
+    } catch (error) {
+      console.error(
+        "Error removing item from cart:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
