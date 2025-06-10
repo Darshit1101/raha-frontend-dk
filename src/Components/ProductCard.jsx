@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, ShoppingBag } from "lucide-react";
+import { api } from "axiosApi";
 
 const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
