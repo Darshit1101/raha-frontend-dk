@@ -20,7 +20,6 @@ import { api } from "axiosApi";
 
 const SingleProduct = (props) => {
   const { state, changeNameValue } = props;
-  console.log("state.SinProduct", state.SinProduct);
   const navigate = useNavigate();
   let userID = JSON.parse(localStorage.getItem("userID"));
 
@@ -80,10 +79,6 @@ const SingleProduct = (props) => {
   const handleAddToWishlist = () => {
     navigate("/wishlist");
     AddToWishlistAPI();
-    console.log("Added to wishlist:", {
-      product: "Revitalizing Hair Oil",
-    });
-    // Here you would typically dispatch to a wishlist state or API
   };
 
   // Handle review submission
@@ -151,7 +146,6 @@ const SingleProduct = (props) => {
     };
     try {
       const response = await api.post("/addToWishlist", obj);
-      console.log("Add to wishlist response:", response.data.data);
       // Optionally show a success message or update cart state here
     } catch (error) {
       console.error(
@@ -177,7 +171,6 @@ const SingleProduct = (props) => {
           <div className="grid grid-cols-4 gap-2">
             {thumbnails.map(
               (thumb, index) => (
-                console.log(thumb),
                 (
                   <div
                     key={index}
@@ -390,9 +383,7 @@ const SingleProduct = (props) => {
               <div>
                 <h3 className="font-medium mb-2">Ingredients</h3>
                 <p className="text-gray-600">
-                  Coconut Oil, Sesame Oil, Amla Extract, Bhringraj Extract,
-                  Brahmi Extract, Neem Extract, Aloe Vera, Vitamin E, Essential
-                  Oils (Lavender, Rosemary).
+                 {state.SinProduct?.ingredients}
                 </p>
               </div>
             )}
@@ -400,14 +391,11 @@ const SingleProduct = (props) => {
               <div>
                 <h3 className="font-medium mb-2">How to Use</h3>
                 <ol className="list-decimal list-inside space-y-2 text-gray-600">
-                  <li>Take a small amount of oil in your palm.</li>
-                  <li>Massage gently into your scalp using fingertips.</li>
-                  <li>
-                    Leave on for at least 30 minutes or overnight for best
-                    results.
-                  </li>
-                  <li>Wash with a mild shampoo.</li>
-                  <li>Use 2-3 times a week for optimal results.</li>
+                  {
+                    state.SinProduct?.howToUse?.map((step, index) => (
+                      <li key={index}>{step}</li>
+                    ))
+                  }
                 </ol>
               </div>
             )}
