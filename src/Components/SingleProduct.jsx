@@ -79,6 +79,7 @@ const SingleProduct = (props) => {
   // Handle add to wishlist
   const handleAddToWishlist = () => {
     navigate("/wishlist");
+    AddToWishlistAPI();
     console.log("Added to wishlist:", {
       product: "Revitalizing Hair Oil",
     });
@@ -132,7 +133,6 @@ const SingleProduct = (props) => {
     };
     try {
       const response = await api.post("/addToCart", obj);
-      console.log("Add to cart response:", response.data.data);
       // Optionally show a success message or update cart state here
     } catch (error) {
       console.error(
@@ -142,6 +142,25 @@ const SingleProduct = (props) => {
       // Optionally show an error message to the user
     }
   };
+
+  //add to wishlist api call
+  const AddToWishlistAPI =  async () => {
+    let obj = {
+      userId: userID,
+      productId: state.SinProduct.productId,
+    };
+    try {
+      const response = await api.post("/addToWishlist", obj);
+      console.log("Add to wishlist response:", response.data.data);
+      // Optionally show a success message or update cart state here
+    } catch (error) {
+      console.error(
+        "Error adding to cart:",
+        error.response?.data || error.message
+      );
+      // Optionally show an error message to the user
+    }
+  }
 
   return (
     <div className="max-w-0xl justify-center py-8">
