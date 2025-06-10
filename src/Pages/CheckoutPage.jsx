@@ -5,18 +5,20 @@ import { Link } from "react-router-dom";
 import { StateSelect, CitySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import p2 from "../assets/p2.png";
+import { api } from "axiosApi";
 
 export default function CheckoutPage() {
+    let userID = JSON.parse(localStorage.getItem("userID"));
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     address: "",
-    apartment: "",
+    apt: "",
     city: "",
     state: "",
-    zipCode: "",
+    postalCode: "",
     paymentMethod: "credit",
     cardNumber: "",
     expiryDate: "",
@@ -77,7 +79,7 @@ export default function CheckoutPage() {
       !formData.address ||
       !formData.city ||
       !formData.state ||
-      !formData.zipCode
+      !formData.postalCode
     ) {
       alert("Please fill in all required fields");
       return;
@@ -93,6 +95,42 @@ export default function CheckoutPage() {
 
     console.log("Order placed successfully!", formData);
     alert("Order placed successfully!");
+    addOrderData();
+  };
+
+  //add order data api call
+  const addOrderData = async () => {
+    let orderData = {
+      userId: userID,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      apt: formData.apt,
+      city: formData.city,
+      state: formData.state,
+      postalCode: formData.postalCode,
+      paymentMethod: formData.paymentMethod,
+      totalPrice: total.toFixed(2),
+      items: cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        totalAmount: item.quantity * item.price,
+      })),
+    };
+    console.log("orderData=============>", orderData);
+
+    // try {
+    //   const response = await api.post("/addOrder", orderData);
+    //   console.log("Order response:", response.data);
+    // } catch (error) {
+    //   console.error(
+    //     "Error placing order:",
+    //     error.response?.data || error.message
+    //   );
+    // }
   };
 
   return (
@@ -214,16 +252,16 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <label
-                    htmlFor="apartment"
+                    htmlFor="apt"
                     className="block text-sm font-medium text-gray-700 mb-5"
                   >
                     Apartment, suite, etc. (optional)
                   </label>
                   <input
                     type="text"
-                    id="apartment"
-                    name="apartment"
-                    value={formData.apartment}
+                    id="apt"
+                    name="apt"
+                    value={formData.apt}
                     onChange={handleChange}
                     placeholder="Apartment, suite, etc."
                     className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary rounded-md"
@@ -275,16 +313,16 @@ export default function CheckoutPage() {
 
                   <div>
                     <label
-                      htmlFor="zipCode"
+                      htmlFor="postalCode"
                       className="block text-sm font-medium text-gray-700 mb-5"
                     >
                       ZIP Code
                     </label>
                     <input
                       type="tel"
-                      id="zipCode"
-                      name="zipCode"
-                      value={formData.zipCode}
+                      id="postalCode"
+                      name="postalCode"
+                      value={formData.postalCode}
                       onChange={handleChange}
                       placeholder="Enter ZIP Code"
                       className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary rounded-md"
