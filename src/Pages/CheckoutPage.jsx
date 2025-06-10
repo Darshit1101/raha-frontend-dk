@@ -125,23 +125,22 @@ export default function CheckoutPage() {
       paymentMethod: formData.paymentMethod,
       totalPrice: total.toFixed(2),
       items: cartItems.map((item) => ({
-        productId: item.id,
+        productId: item.productId,
         quantity: item.quantity,
-        price: item.price,
-        totalAmount: item.quantity * item.price,
+        price: item.product.actualPrice,
+        totalAmount: item.quantity * item.product.actualPrice,
       })),
     };
-    console.log("orderData=============>", orderData);
 
-    // try {
-    //   const response = await api.post("/addOrder", orderData);
-    //   console.log("Order response:", response.data);
-    // } catch (error) {
-    //   console.error(
-    //     "Error placing order:",
-    //     error.response?.data || error.message
-    //   );
-    // }
+    try {
+      const response = await api.post("/addOrder", orderData);
+      console.log("Order response:", response.data);
+    } catch (error) {
+      console.error(
+        "Error placing order:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   return (
