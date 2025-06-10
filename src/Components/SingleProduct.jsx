@@ -15,9 +15,13 @@ import sp2 from "../assets/sp2.png";
 import sp3 from "../assets/sp3.png";
 import sp4 from "../assets/sp4.png";
 import sc1 from "../assets/sc1.png";
+import { useNavigate } from "react-router-dom";
+import { api } from "axiosApi";
 
 const SingleProduct = (props) => {
   const { state, changeNameValue } = props;
+  console.log("state.SinProduct", state.SinProduct);
+  const navigate = useNavigate();
 
   // State for product images
   const [mainImage, setMainImage] = useState(sp1);
@@ -66,13 +70,8 @@ const SingleProduct = (props) => {
 
   // Handle add to cart
   const handleAddToCart = () => {
-    console.log("Added to cart:", {
-      product: "Revitalizing Hair Oil",
-      variant,
-      size,
-      quantity,
-    });
-    // Here you would typically dispatch to a cart state or API
+    navigate("/cart");
+    AddToCartAPI();
   };
 
   // Handle add to wishlist
@@ -119,6 +118,26 @@ const SingleProduct = (props) => {
           }`}
         />
       ));
+  };
+
+  //add to cart api call
+  const AddToCartAPI = async () => {
+    let obj = {
+      userId: localStorage.getItem("userID"),
+      productId: state.SinProduct.productId,
+      quantity: quantity,
+    };
+    try {
+      const response = await api.post("/addToCart", obj);
+      console.log("Add to cart response:", response.data.data);
+      // Optionally show a success message or update cart state here
+    } catch (error) {
+      console.error(
+        "Error adding to cart:",
+        error.response?.data || error.message
+      );
+      // Optionally show an error message to the user
+    }
   };
 
   return (
