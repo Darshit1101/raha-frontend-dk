@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect,useCallback  } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   User,
   ClipboardList,
@@ -53,7 +53,7 @@ export default function UserProfile() {
   const [state, setState] = useState({
     OrderDetail: [],
   });
-  console.log('state.orderDetail====>',state.OrderDetail)
+  console.log("state.orderDetail====>", state.OrderDetail);
   //set data in state
   const changeNameValue = useCallback((obj) => {
     setState((prevState) => ({ ...prevState, ...obj }));
@@ -271,6 +271,8 @@ export default function UserProfile() {
       },
     },
   ];
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //call api order by userId
   useEffect(() => {
