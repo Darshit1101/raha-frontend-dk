@@ -1,39 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Trash2, ChevronLeft, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import p2 from "../assets/p2.png";
+import { api } from "axiosApi";
 
 export default function CartPage() {
   const navigate = useNavigate();
+  let userID = JSON.parse(localStorage.getItem("userID"));
+
+  const [state, setState] = useState({
+    CartList: [],
+  });
+
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
+
   // Initial cart items state
   const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      quantity: 1,
-      image: p2,
-      isBestSeller: true,
-    },
-    {
-      id: 2,
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      quantity: 1,
-      image: p2,
-      isBestSeller: true,
-    },
+    // {
+    //   id: 1,
+    //   slug: "balancing-night-cream",
+    //   name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+    //   subtitle: "Shudhi Skin Clarifying Facial Spray",
+    //   volume: "130ml",
+    //   price: 1934.0,
+    //   rating: 5,
+    //   reviews: 51,
+    //   quantity: 1,
+    //   image: p2,
+    //   isBestSeller: true,
+    // },
+    // {
+    //   id: 2,
+    //   slug: "balancing-night-cream",
+    //   name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+    //   subtitle: "Shudhi Skin Clarifying Facial Spray",
+    //   volume: "130ml",
+    //   price: 1934.0,
+    //   rating: 5,
+    //   reviews: 51,
+    //   quantity: 1,
+    //   image: p2,
+    //   isBestSeller: true,
+    // },
   ]);
 
   // Order summary constants
@@ -41,24 +53,24 @@ export default function CartPage() {
   const tax = 20.0;
 
   // Handle quantity change
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity = (cartId, newQuantity) => {
     if (newQuantity < 1) return;
 
     setCartItems(
       cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+        item.cartId === cartId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   // Handle item removal
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  const removeItem = (cartId) => {
+    setCartItems(cartItems.filter((item) => item.cartId !== cartId));
   };
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item?.product?.actualPrice * item.quantity,
     0
   );
 
@@ -70,6 +82,24 @@ export default function CartPage() {
     navigate("/checkoutpage"); // Navigate to the checkout page
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top smoothly
   };
+
+  //get add to cart api call
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await api.get(`/getCart/${userID}`);
+        setCartItems(response.data.data || []);
+        // Optionally show a success message or update cart state here
+      } catch (error) {
+        console.error(
+          "Error adding to cart:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    fetchCart();
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -100,8 +130,9 @@ export default function CartPage() {
 
             {/* Cart Items */}
             {cartItems.map((item) => (
+              console.log("item", item.quantity),
               <div
-                key={item.id}
+                key={item.cartId}
                 className="border-b border-[#DCDCDC] py-4 mb-4"
               >
                 {/* Mobile View */}
@@ -116,14 +147,14 @@ export default function CartPage() {
                     />
                   </div>
                   <div className="col-span-1">
-                    <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-500">Size: {item.size}</p>
-                    <p className="font-medium mt-2">₹{item.price.toFixed(2)}</p>
+                    <h3 className="font-medium">{item?.product?.name}</h3>
+                    <p className="text-sm text-gray-500">Size: {item.product.size}</p>
+                    <p className="font-medium mt-2"> ₹{Number(item?.product?.actualPrice).toFixed(2)}</p>
 
                     <div className="flex items-center mt-2 border rounded-md w-fit">
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
+                          updateQuantity(item.cartId, item.quantity - 1)
                         }
                         className="px-3 py-1 text-gray-600 "
                       >
@@ -134,13 +165,13 @@ export default function CartPage() {
                         value={item.quantity}
                         onChange={(e) => {
                           const val = Number.parseInt(e.target.value);
-                          if (!isNaN(val)) updateQuantity(item.id, val);
+                          if (!isNaN(val)) updateQuantity(item.cartId, val);
                         }}
                         className="w-10 text-center py-1"
                       />
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
+                          updateQuantity(item.cartId, item.quantity + 1)
                         }
                         className="px-3 py-1 text-gray-600"
                       >
@@ -150,10 +181,10 @@ export default function CartPage() {
 
                     <div className="flex justify-between items-center mt-4">
                       <p className="font-medium">
-                        Total: ₹{(item.price * item.quantity).toFixed(2)}
+                        Total: ₹{(item?.product?.actualPrice * item.quantity).toFixed(2)}
                       </p>
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeItem(item.cartId)}
                         className="text-gray-500 hover:text-red-500"
                       >
                         <Trash2 size={18} />
@@ -175,15 +206,15 @@ export default function CartPage() {
                   </div>
                   <div className="col-span-1">
                     <span className="whitespace-nowrap overflow-hidden text-ellipsis block">
-                      {item.name}
+                      {item?.product?.name}
                     </span>
-                    <p className="text-sm text-gray-500">Size: {item.size}</p>
+                    <p className="text-sm text-gray-500">Size: {item.product?.size}</p>
                   </div>
                   <div className="col-span-1 flex justify-center">
                     <div className="flex items-center border rounded-md border-[#DCDCDC]">
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
+                          updateQuantity(item.cartId, item.quantity - 1)
                         }
                         className="px-3 py-1 text-gray-600"
                       >
@@ -194,13 +225,13 @@ export default function CartPage() {
                         value={item.quantity}
                         onChange={(e) => {
                           const val = Number.parseInt(e.target.value);
-                          if (!isNaN(val)) updateQuantity(item.id, val);
+                          if (!isNaN(val)) updateQuantity(item.cartId, val);
                         }}
                         className="w-10 text-center py-1"
                       />
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
+                          updateQuantity(item.cartId, item.quantity + 1)
                         }
                         className="px-3 py-1 text-gray-600"
                       >
@@ -209,14 +240,14 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div className="col-span-1 text-center">
-                    ₹{item.price.toFixed(2)}
+                    ₹{Number(item?.product?.actualPrice).toFixed(2)}
                   </div>
                   <div className="col-span-1 text-center font-medium">
-                    ₹{(item.price * item.quantity).toFixed(2)}
+                    ₹{Number(item?.product?.actualPrice * item.quantity).toFixed(2)}
                   </div>
                   <div className="col-span-1 flex justify-center">
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.cartId)}
                       className="text-gray-500 hover:text-red-500"
                     >
                       <Trash2 size={20} />

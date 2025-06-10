@@ -22,6 +22,7 @@ const SingleProduct = (props) => {
   const { state, changeNameValue } = props;
   console.log("state.SinProduct", state.SinProduct);
   const navigate = useNavigate();
+  let userID = JSON.parse(localStorage.getItem("userID"));
 
   // State for product images
   const [mainImage, setMainImage] = useState(sp1);
@@ -72,6 +73,7 @@ const SingleProduct = (props) => {
   const handleAddToCart = () => {
     navigate("/cart");
     AddToCartAPI();
+
   };
 
   // Handle add to wishlist
@@ -123,7 +125,7 @@ const SingleProduct = (props) => {
   //add to cart api call
   const AddToCartAPI = async () => {
     let obj = {
-      userId: localStorage.getItem("userID"),
+      userId: userID,
       productId: state.SinProduct.productId,
       quantity: quantity,
     };
