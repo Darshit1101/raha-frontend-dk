@@ -6,31 +6,65 @@ import { Link } from "react-router-dom";
 // import { ChevronDown } from "lucide-react";
 import ProductCard from "../Components/ProductCard";
 import p3 from "../assets/p3.png";
+import { useEffect, useState, useCallback } from "react";
+import { api } from "axiosApi";
 
 const WishlistPage = () => {
   const navigate = useNavigate();
+  let userID = JSON.parse(localStorage.getItem("userID"));
+
+  //all state
+  const [state,setState] = useState({
+    wishlistProducts: [],
+  });
+
+  console.log("WishlistPage state:", state.wishlistProducts);
+
+  //set data in state
+  const changeNameValue = useCallback((obj) => {
+    setState((prevState) => ({ ...prevState, ...obj }));
+  }, []);
 
   // Sample featured products data
-  const featuredProducts = [
-    {
-      id: "1",
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      image: p3,
-      isBestSeller: true,
-    },
-  ];
+  // const featuredProducts = [
+  //   {
+  //     id: "1",
+  //     slug: "balancing-night-cream",
+  //     name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "130ml",
+  //     price: 1934.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     image: p3,
+  //     isBestSeller: true,
+  //   },
+  // ];
+  const featuredProducts = state.wishlistProducts;
 
   // Handle View All click
   //   const handleViewAll = () => {
   //     navigate("/shop/allproducts");
   //     window.scrollTo(0, 0); // Scroll to top of window
   //   };
+
+  //get wishlist products api
+  useEffect(() => {
+    console.log("Fetching wishlist products...");
+    const fetchWishlist = async () => {
+      try {
+        const response = await api.get(`/getWishlist/${userID}`);
+        changeNameValue({ wishlistProducts: response.data?.data });
+        // Optionally show a success message or update cart state here
+      } catch (error) {
+        console.error(
+          "Error updating item in cart:",
+          error.response?.data || error.message
+        );
+      }
+    };
+    fetchWishlist();
+  }, []);
 
   return (
     <div className="relative">
@@ -59,8 +93,9 @@ const WishlistPage = () => {
           {/* Product Grid - 4 columns on desktop, 2 on mobile */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-4">
             {featuredProducts.map((product) => (
-              <div key={product.id} className="flex">
-                <ProductCard product={product} />
+              console.log("Rendering product:", product),
+              <div key={product.wishlistId} className="flex">
+                <ProductCard product={product.product} />
               </div>
             ))}
           </div>
