@@ -11,8 +11,8 @@ const ProductCard = ({ product }) => {
   // Handle add to bag click
   const handleAddToBag = (e) => {
     e.stopPropagation(); // Prevent navigation to product page
-    console.log(`Added ${product.name} to bag`);
     alert(`${product.name} added to your bag!`);
+    navigate('/cart')
   };
 
   // Handle card click to navigate to product page
@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
   };
 
   // Generate star rating
-  const   renderStars = () => {
+  const renderStars = () => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
