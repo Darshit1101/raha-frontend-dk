@@ -6,9 +6,20 @@ import { StateSelect, CitySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import p2 from "../assets/p2.png";
 import { api } from "axiosApi";
+import { useLocation } from "react-router-dom";
 
 export default function CheckoutPage() {
-    let userID = JSON.parse(localStorage.getItem("userID"));
+  let userID = JSON.parse(localStorage.getItem("userID"));
+  const location = useLocation();
+
+  //access total and subtotal from location state
+  console.log("location ============>", location.state);
+  const totalPass = location.state?.total || 0;
+  const subtotalPass = location.state?.subtotal || 0;
+  const cartItems = location.state?.cartItems || [];
+  console.log("CheckoutPage total:", totalPass);
+  console.log("CheckoutPage subtotal:", subtotalPass);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,37 +38,37 @@ export default function CheckoutPage() {
 
   const [stateId, setStateId] = useState(0);
 
-  const [cartItems] = useState([
-    {
-      id: "1",
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      quantity: 1,
-      image: "/rice-water-shampoo.png",
-      isBestSeller: true,
-    },
-    {
-      id: 2,
-      slug: "balancing-night-cream",
-      name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-      subtitle: "Shudhi Skin Clarifying Facial Spray",
-      volume: "130ml",
-      price: 1934.0,
-      rating: 5,
-      reviews: 51,
-      quantity: 1,
-      image: "/rice-water-shampoo.png",
-      isBestSeller: true,
-    },
-  ]);
+  // const [cartItems] = useState([
+  //   {
+  //     id: "1",
+  //     slug: "balancing-night-cream",
+  //     name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "130ml",
+  //     price: 1934.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     quantity: 1,
+  //     image: "/rice-water-shampoo.png",
+  //     isBestSeller: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     slug: "balancing-night-cream",
+  //     name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
+  //     subtitle: "Shudhi Skin Clarifying Facial Spray",
+  //     volume: "130ml",
+  //     price: 1934.0,
+  //     rating: 5,
+  //     reviews: 51,
+  //     quantity: 1,
+  //     image: "/rice-water-shampoo.png",
+  //     isBestSeller: true,
+  //   },
+  // ]);
 
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (total, item) => total + item?.product?.actualPrice * item.quantity,
     0
   );
   const shipping = 20;
@@ -388,17 +399,26 @@ export default function CheckoutPage() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center">
                   <img
-                    src={p2}
+                    // src={p2}
+                    src={
+                      item.product?.images?.[0]?.image_path
+                        ? `${import.meta.env.VITE_API_IMAGE_URL}/${
+                            item.product.images[0].image_path
+                          }`
+                        : "/placeholder.svg"
+                    }
                     alt={item.name}
                     className="w-14 h-14 object-cover mr-4"
                   />
                   <div className="flex-1">
-                    <h3 className="text-sm font-medium">{item.name}</h3>
+                    <h3 className="text-sm font-medium">{item.product.name}</h3>
                     <p className="text-sm text-gray-500">
                       Qty: {item.quantity}
                     </p>
                   </div>
-                  <p className="text-sm font-medium">₹{item.price}</p>
+                  <p className="text-sm font-medium">
+                    ₹{item.product.actualPrice}
+                  </p>
                 </div>
               ))}
             </div>

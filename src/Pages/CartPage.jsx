@@ -19,34 +19,8 @@ export default function CartPage() {
   }, []);
 
   // Initial cart items state
-  const [cartItems, setCartItems] = useState([
-    // {
-    //   id: 1,
-    //   slug: "balancing-night-cream",
-    //   name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-    //   subtitle: "Shudhi Skin Clarifying Facial Spray",
-    //   volume: "130ml",
-    //   price: 1934.0,
-    //   rating: 5,
-    //   reviews: 51,
-    //   quantity: 1,
-    //   image: p2,
-    //   isBestSeller: true,
-    // },
-    // {
-    //   id: 2,
-    //   slug: "balancing-night-cream",
-    //   name: "BALANCING NIGHT CREAM WITH GOTU KOLA & NEEM",
-    //   subtitle: "Shudhi Skin Clarifying Facial Spray",
-    //   volume: "130ml",
-    //   price: 1934.0,
-    //   rating: 5,
-    //   reviews: 51,
-    //   quantity: 1,
-    //   image: p2,
-    //   isBestSeller: true,
-    // },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  console.log(" cartItems:", cartItems);
 
   // Order summary constants
   const shipping = 20.0;
@@ -67,7 +41,7 @@ export default function CartPage() {
 
   // Handle item removal
   const removeItem = (cartId) => {
-    deleteCartItem(cartId); 
+    deleteCartItem(cartId);
     setCartItems(cartItems.filter((item) => item.cartId !== cartId));
   };
 
@@ -82,7 +56,7 @@ export default function CartPage() {
 
   // Handle checkout
   const handleCheckout = () => {
-    navigate("/checkoutpage"); // Navigate to the checkout page
+    navigate("/checkoutpage", { state: { total,subtotal,cartItems} });
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top smoothly
   };
 
@@ -162,161 +136,157 @@ export default function CartPage() {
             </div>
 
             {/* Cart Items */}
-            {cartItems.map(
-              (item) => (
-                (
-                  <div
-                    key={item.cartId}
-                    className="border-b border-[#DCDCDC] py-4 mb-4"
-                  >
-                    {/* Mobile View */}
-                    <div className="md:hidden grid grid-cols-2 gap-4 mb-4">
-                      <div className="col-span-1">
-                        <img
-                          src={
-                            item.product?.images?.[0]?.image_path
-                              ? `${import.meta.env.VITE_API_IMAGE_URL}/${
-                                  item.product.images[0].image_path
-                                }`
-                              : "/placeholder.svg"
-                          }
-                          alt={item.name}
-                          width={100}
-                          height={100}
-                          className="rounded-md object-cover"
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <h3 className="font-medium">{item?.product?.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          Size: {item.product.size}
-                        </p>
-                        <p className="font-medium mt-2">
-                          {" "}
-                          ₹{Number(item?.product?.actualPrice).toFixed(2)}
-                        </p>
+            {cartItems.map((item) => (
+              <div
+                key={item.cartId}
+                className="border-b border-[#DCDCDC] py-4 mb-4"
+              >
+                {/* Mobile View */}
+                <div className="md:hidden grid grid-cols-2 gap-4 mb-4">
+                  <div className="col-span-1">
+                    <img
+                      src={
+                        item.product?.images?.[0]?.image_path
+                          ? `${import.meta.env.VITE_API_IMAGE_URL}/${
+                              item.product.images[0].image_path
+                            }`
+                          : "/placeholder.svg"
+                      }
+                      alt={item.name}
+                      width={100}
+                      height={100}
+                      className="rounded-md object-cover"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <h3 className="font-medium">{item?.product?.name}</h3>
+                    <p className="text-sm text-gray-500">
+                      Size: {item.product.size}
+                    </p>
+                    <p className="font-medium mt-2">
+                      {" "}
+                      ₹{Number(item?.product?.actualPrice).toFixed(2)}
+                    </p>
 
-                        <div className="flex items-center mt-2 border rounded-md w-fit">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity - 1)
-                            }
-                            className="px-3 py-1 text-gray-600 "
-                          >
-                            -
-                          </button>
-                          <input
-                            type="text"
-                            value={item.quantity}
-                            onChange={(e) => {
-                              const val = Number.parseInt(e.target.value);
-                              if (!isNaN(val)) updateQuantity(item.cartId, val);
-                            }}
-                            className="w-10 text-center py-1"
-                          />
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity + 1)
-                            }
-                            className="px-3 py-1 text-gray-600"
-                          >
-                            +
-                          </button>
-                        </div>
-
-                        <div className="flex justify-between items-center mt-4">
-                          <p className="font-medium">
-                            Total: ₹
-                            {(
-                              item?.product?.actualPrice * item.quantity
-                            ).toFixed(2)}
-                          </p>
-                          <button
-                            onClick={() => removeItem(item.cartId)}
-                            className="text-gray-500 hover:text-red-500"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                      </div>
+                    <div className="flex items-center mt-2 border rounded-md w-fit">
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.cartId, item.quantity - 1)
+                        }
+                        className="px-3 py-1 text-gray-600 "
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const val = Number.parseInt(e.target.value);
+                          if (!isNaN(val)) updateQuantity(item.cartId, val);
+                        }}
+                        className="w-10 text-center py-1"
+                      />
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.cartId, item.quantity + 1)
+                        }
+                        className="px-3 py-1 text-gray-600"
+                      >
+                        +
+                      </button>
                     </div>
 
-                    {/* Desktop View */}
-                    <div className="hidden md:grid md:grid-cols-6 md:items-center">
-                      <div className="col-span-1">
-                        <img
-                          src={
-                            item.product?.images?.[0]?.image_path
-                              ? `${import.meta.env.VITE_API_IMAGE_URL}/${
-                                  item.product.images[0].image_path
-                                }`
-                              : "/placeholder.svg"
-                          }
-                          alt={item.name}
-                          width={80}
-                          height={80}
-                          className="rounded-md object-cover"
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <span className="whitespace-nowrap overflow-hidden text-ellipsis block">
-                          {item?.product?.name}
-                        </span>
-                        <p className="text-sm text-gray-500">
-                          Size: {item.product?.size}
-                        </p>
-                      </div>
-                      <div className="col-span-1 flex justify-center">
-                        <div className="flex items-center border rounded-md border-[#DCDCDC]">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity - 1)
-                            }
-                            className="px-3 py-1 text-gray-600"
-                          >
-                            -
-                          </button>
-                          <input
-                            type="text"
-                            value={item.quantity}
-                            onChange={(e) => {
-                              const val = Number.parseInt(e.target.value);
-                              if (!isNaN(val)) updateQuantity(item.cartId, val);
-                            }}
-                            className="w-10 text-center py-1"
-                          />
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity + 1)
-                            }
-                            className="px-3 py-1 text-gray-600"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      <div className="col-span-1 text-center">
-                        ₹{Number(item?.product?.actualPrice).toFixed(2)}
-                      </div>
-                      <div className="col-span-1 text-center font-medium">
-                        ₹
-                        {Number(
-                          item?.product?.actualPrice * item.quantity
-                        ).toFixed(2)}
-                      </div>
-                      <div className="col-span-1 flex justify-center">
-                        <button
-                          onClick={() => removeItem(item.cartId)}
-                          className="text-gray-500 hover:text-red-500"
-                        >
-                          <Trash2 size={20} />
-                        </button>
-                      </div>
+                    <div className="flex justify-between items-center mt-4">
+                      <p className="font-medium">
+                        Total: ₹
+                        {(item?.product?.actualPrice * item.quantity).toFixed(
+                          2
+                        )}
+                      </p>
+                      <button
+                        onClick={() => removeItem(item.cartId)}
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                     </div>
                   </div>
-                )
-              )
-            )}
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden md:grid md:grid-cols-6 md:items-center">
+                  <div className="col-span-1">
+                    <img
+                      src={
+                        item.product?.images?.[0]?.image_path
+                          ? `${import.meta.env.VITE_API_IMAGE_URL}/${
+                              item.product.images[0].image_path
+                            }`
+                          : "/placeholder.svg"
+                      }
+                      alt={item.name}
+                      width={80}
+                      height={80}
+                      className="rounded-md object-cover"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis block">
+                      {item?.product?.name}
+                    </span>
+                    <p className="text-sm text-gray-500">
+                      Size: {item.product?.size}
+                    </p>
+                  </div>
+                  <div className="col-span-1 flex justify-center">
+                    <div className="flex items-center border rounded-md border-[#DCDCDC]">
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.cartId, item.quantity - 1)
+                        }
+                        className="px-3 py-1 text-gray-600"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const val = Number.parseInt(e.target.value);
+                          if (!isNaN(val)) updateQuantity(item.cartId, val);
+                        }}
+                        className="w-10 text-center py-1"
+                      />
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.cartId, item.quantity + 1)
+                        }
+                        className="px-3 py-1 text-gray-600"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-span-1 text-center">
+                    ₹{Number(item?.product?.actualPrice).toFixed(2)}
+                  </div>
+                  <div className="col-span-1 text-center font-medium">
+                    ₹
+                    {Number(item?.product?.actualPrice * item.quantity).toFixed(
+                      2
+                    )}
+                  </div>
+                  <div className="col-span-1 flex justify-center">
+                    <button
+                      onClick={() => removeItem(item.cartId)}
+                      className="text-gray-500 hover:text-red-500"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
 
             {/* Continue Shopping Button */}
             <div className="mt-8">
