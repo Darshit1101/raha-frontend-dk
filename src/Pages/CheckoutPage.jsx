@@ -1,16 +1,17 @@
 "use client";
 import { useState } from "react";
 import { ChevronLeft, CreditCard } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { StateSelect, CitySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import p2 from "../assets/p2.png";
 import { api } from "axiosApi";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
   let userID = JSON.parse(localStorage.getItem("userID"));
   const location = useLocation();
+  const navigate = useNavigate();
 
   //access total and subtotal from location state
   console.log("location ============>", location.state);
@@ -107,6 +108,7 @@ export default function CheckoutPage() {
     console.log("Order placed successfully!", formData);
     alert("Order placed successfully!");
     addOrderData();
+    navigate('/');
   };
 
   //add order data api call
