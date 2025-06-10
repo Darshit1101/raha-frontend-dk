@@ -56,7 +56,7 @@ export default function CartPage() {
 
   // Handle checkout
   const handleCheckout = () => {
-    navigate("/checkoutpage", { state: { total,subtotal,cartItems} });
+    navigate("/checkoutpage", { state: { cartItems } });
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top smoothly
   };
 
