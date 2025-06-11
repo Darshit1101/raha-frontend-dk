@@ -10,6 +10,7 @@ import { useEffect, useCallback, useState } from "react";
 const HomePage = () => {
   const [state, setState] = useState({
     AllProducts: [],
+    ALlReviews : []
   });
 
   //set data in state
@@ -31,13 +32,27 @@ const HomePage = () => {
     fetchData();
   }, []);
 
+  //get all reviewn 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/getReview");
+        changeNameValue({ ALlReviews: response.data.data });
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  },[])
+
   return (
     <>
       <Hero />
       <FeaturedProduct state={state} changeNameValue={changeNameValue} />
       <HairCare state={state} changeNameValue={changeNameValue}/>
       <Quality />
-      <Testimonial />
+      <Testimonial state={state} changeNameValue={changeNameValue} />
       <InstaPostWithStyles />
     </>
   );

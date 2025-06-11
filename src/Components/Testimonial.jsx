@@ -4,32 +4,32 @@ import React, { useRef, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
 // Sample testimonial data
-const testimonialData = [
-  {
-    id: 1,
-    name: "Priya S.",
-    rating: 5,
-    image: "/smiling-woman-long-hair.png",
-    review:
-      "After trying countless products for my dry hair, Raha's Hair Oil has been a game-changer. My hair feels nourished and looks healthier than ever!",
-  },
-  {
-    id: 2,
-    name: "Aisha M.",
-    rating: 5,
-    image: "/curly-haired-woman.png",
-    review:
-      "I've been using this product for 3 months now and the results are amazing. My scalp feels healthier and my hair has never been shinier!",
-  },
-  {
-    id: 3,
-    name: "Rahul K.",
-    rating: 5,
-    image: "/short-haired-man.png",
-    review:
-      "The natural ingredients in this oil have transformed my hair. No more dryness or frizz. Highly recommend to anyone struggling with hair issues.",
-  },
-];
+// const testimonialData = [
+//   {
+//     id: 1,
+//     name: "Priya S.",
+//     rating: 5,
+//     image: "/smiling-woman-long-hair.png",
+//     review:
+//       "After trying countless products for my dry hair, Raha's Hair Oil has been a game-changer. My hair feels nourished and looks healthier than ever!",
+//   },
+//   {
+//     id: 2,
+//     name: "Aisha M.",
+//     rating: 5,
+//     image: "/curly-haired-woman.png",
+//     review:
+//       "I've been using this product for 3 months now and the results are amazing. My scalp feels healthier and my hair has never been shinier!",
+//   },
+//   {
+//     id: 3,
+//     name: "Rahul K.",
+//     rating: 5,
+//     image: "/short-haired-man.png",
+//     review:
+//       "The natural ingredients in this oil have transformed my hair. No more dryness or frizz. Highly recommend to anyone struggling with hair issues.",
+//   },
+// ];
 
 // Star rating component
 const StarRating = ({ rating }) => (
@@ -97,7 +97,10 @@ const TestimonialCard = ({ testimonial }) => (
 );
 
 // Main carousel
-const Testimonial = () => {
+const Testimonial = (props) => {
+  const { state, changeNameValue } = props;
+  const testimonialData = state.ALlReviews;
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "center",
@@ -139,7 +142,7 @@ const Testimonial = () => {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
             {testimonialData.map((testimonial) => (
-              <div className="flex-[0_0_100%] min-w-0" key={testimonial.id}>
+              <div className="flex-[0_0_100%] min-w-0" key={testimonial.CustomerReviewId}>
                 <TestimonialCard testimonial={testimonial} />
               </div>
             ))}
