@@ -272,7 +272,7 @@ export default function UserProfile() {
   //   },
   // ];
 
-  const orders = state.OrderDetail
+  const orders = state.OrderDetail;
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -601,7 +601,9 @@ export default function UserProfile() {
                       .items.map((item, index) => (
                         <div key={index} className="flex items-center">
                           <img
-                            src={item.image}
+                            src={`${import.meta.env.VITE_API_IMAGE_URL}/${
+                              item.image[0]
+                            }`}
                             alt={item.name}
                             className="w-14 h-14 object-cover mr-4"
                           />
@@ -663,7 +665,9 @@ export default function UserProfile() {
                     {order.items.map((item, index) => (
                       <div key={index} className="flex items-center mb-4 p-6">
                         <img
-                          src={item.image}
+                          src={`${import.meta.env.VITE_API_IMAGE_URL}/${
+                            item.image[0]
+                          }`}
                           alt={item.name}
                           className="w-14 h-14 object-cover mr-4"
                         />
@@ -674,7 +678,10 @@ export default function UserProfile() {
                           </p>
                         </div>
                         <p className="text-sm font-medium">
-                          ₹{item.discountedPrice ? parseFloat(item.discountedPrice).toFixed(2) : '0.00'}
+                          ₹
+                          {item.discountedPrice
+                            ? parseFloat(item.discountedPrice).toFixed(2)
+                            : "0.00"}
                         </p>
                       </div>
                     ))}
