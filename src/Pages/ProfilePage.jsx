@@ -151,126 +151,128 @@ export default function UserProfile() {
     setSelectedAddress(null);
   };
 
-  const orders = [
-    {
-      id: "ORD123456",
-      date: "May 15, 2024",
-      status: "Delivered",
-      trackingNumber: "IND1234567890",
-      courier: "BlueDart",
-      estimatedDelivery: "May 18, 2024",
-      trackingLink: "Track on BlueDart",
-      history: [
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-        {
-          status:
-            "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
-          time: "May 17, 2024, 2:45 PM",
-        },
-      ],
-      items: [
-        {
-          name: "Revitalizing Hair Serum",
-          size: "100ml",
-          price: 120.0,
-          image: "/placeholder.svg?height=60&width=60",
-        },
-        {
-          name: "Revitalizing Hair Serum",
-          size: "100ml",
-          price: 160.0,
-          image: "/placeholder.svg?height=60&width=60",
-        },
-      ],
-      subtotal: 120.0,
-      shipping: 20.0,
-      tax: 20.0,
-      total: 160.0,
-      shippingAddress: {
-        name: "John Doe",
-        address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
-        phone: "+91 98765 43210",
-      },
-    },
-    {
-      id: "ORD123457",
-      date: "May 15, 2024",
-      status: "Pending",
-      trackingNumber: "IND1234567891",
-      courier: "BlueDart",
-      estimatedDelivery: "May 18, 2024",
-      trackingLink: "Track on BlueDart",
-      history: [{ status: "Order Placed", time: "May 15, 2024, 10:00 AM" }],
-      items: [
-        {
-          name: "Revitalizing Hair Serum",
-          size: "100ml",
-          price: 120.0,
-          image: "/placeholder.svg?height=60&width=60",
-        },
-      ],
-      subtotal: 120.0,
-      shipping: 20.0,
-      tax: 20.0,
-      total: 160.0,
-      shippingAddress: {
-        name: "John Doe",
-        address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
-        phone: "+91 98765 43210",
-      },
-    },
-    {
-      id: "ORD123458",
-      date: "May 15, 2024",
-      status: "Cancel",
-      trackingNumber: "IND1234567892",
-      courier: "BlueDart",
-      estimatedDelivery: "May 18, 2024",
-      trackingLink: "Track on BlueDart",
-      history: [{ status: "Order Cancelled", time: "May 15, 2024, 11:00 AM" }],
-      items: [
-        {
-          name: "Revitalizing Hair Serum",
-          size: "100ml",
-          price: 120.0,
-          image: "/placeholder.svg?height=60&width=60",
-        },
-      ],
-      subtotal: 120.0,
-      shipping: 20.0,
-      tax: 20.0,
-      total: 160.0,
-      shippingAddress: {
-        name: "John Doe",
-        address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
-        phone: "+91 98765 43210",
-      },
-    },
-  ];
+  // const orders = [
+  //   {
+  //     id: "ORD123456",
+  //     date: "May 15, 2024",
+  //     status: "Delivered",
+  //     trackingNumber: "IND1234567890",
+  //     courier: "BlueDart",
+  //     estimatedDelivery: "May 18, 2024",
+  //     trackingLink: "Track on BlueDart",
+  //     history: [
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //       {
+  //         status:
+  //           "Delivered MUMBAI, MAHARASHTRA Package delivered to recipient",
+  //         time: "May 17, 2024, 2:45 PM",
+  //       },
+  //     ],
+  //     items: [
+  //       {
+  //         name: "Revitalizing Hair Serum",
+  //         size: "100ml",
+  //         price: 120.0,
+  //         image: "/placeholder.svg?height=60&width=60",
+  //       },
+  //       {
+  //         name: "Revitalizing Hair Serum",
+  //         size: "100ml",
+  //         price: 160.0,
+  //         image: "/placeholder.svg?height=60&width=60",
+  //       },
+  //     ],
+  //     subtotal: 120.0,
+  //     shipping: 20.0,
+  //     tax: 20.0,
+  //     total: 160.0,
+  //     shippingAddress: {
+  //       name: "John Doe",
+  //       address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
+  //       phone: "+91 98765 43210",
+  //     },
+  //   },
+  //   {
+  //     id: "ORD123457",
+  //     date: "May 15, 2024",
+  //     status: "Pending",
+  //     trackingNumber: "IND1234567891",
+  //     courier: "BlueDart",
+  //     estimatedDelivery: "May 18, 2024",
+  //     trackingLink: "Track on BlueDart",
+  //     history: [{ status: "Order Placed", time: "May 15, 2024, 10:00 AM" }],
+  //     items: [
+  //       {
+  //         name: "Revitalizing Hair Serum",
+  //         size: "100ml",
+  //         price: 120.0,
+  //         image: "/placeholder.svg?height=60&width=60",
+  //       },
+  //     ],
+  //     subtotal: 120.0,
+  //     shipping: 20.0,
+  //     tax: 20.0,
+  //     total: 160.0,
+  //     shippingAddress: {
+  //       name: "John Doe",
+  //       address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
+  //       phone: "+91 98765 43210",
+  //     },
+  //   },
+  //   {
+  //     id: "ORD123458",
+  //     date: "May 15, 2024",
+  //     status: "Cancel",
+  //     trackingNumber: "IND1234567892",
+  //     courier: "BlueDart",
+  //     estimatedDelivery: "May 18, 2024",
+  //     trackingLink: "Track on BlueDart",
+  //     history: [{ status: "Order Cancelled", time: "May 15, 2024, 11:00 AM" }],
+  //     items: [
+  //       {
+  //         name: "Revitalizing Hair Serum",
+  //         size: "100ml",
+  //         price: 120.0,
+  //         image: "/placeholder.svg?height=60&width=60",
+  //       },
+  //     ],
+  //     subtotal: 120.0,
+  //     shipping: 20.0,
+  //     tax: 20.0,
+  //     total: 160.0,
+  //     shippingAddress: {
+  //       name: "John Doe",
+  //       address: "123 Main Street, Apartment 4B, Mumbai, Maharashtra 400001",
+  //       phone: "+91 98765 43210",
+  //     },
+  //   },
+  // ];
+
+  const orders = state.OrderDetail
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -554,7 +556,7 @@ export default function UserProfile() {
                         ₹
                         {orders
                           .find((order) => order.id === selectedOrder)
-                          .total.toFixed(2)}
+                          .totalPrice.toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -610,7 +612,7 @@ export default function UserProfile() {
                             </p>
                           </div>
                           <p className="text-sm font-medium">
-                            ₹{item.price.toFixed(2)}
+                            ₹{item.discountedPrice.toFixed(2)}
                           </p>
                         </div>
                       ))}
@@ -620,7 +622,7 @@ export default function UserProfile() {
                         ₹
                         {orders
                           .find((order) => order.id === selectedOrder)
-                          .total.toFixed(2)}
+                          .totalPrice.toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -672,14 +674,14 @@ export default function UserProfile() {
                           </p>
                         </div>
                         <p className="text-sm font-medium">
-                          ₹{item.price.toFixed(2)}
+                          ₹{item.discountedPrice ? parseFloat(item.discountedPrice).toFixed(2) : '0.00'}
                         </p>
                       </div>
                     ))}
                     <div className="flex justify-between items-center border-t p-6 border-gray-200 pt-4 rounded-md">
                       <p className="text-base font-medium">Total</p>
                       <p className="text-base font-bold">
-                        ₹{order.total.toFixed(2)}
+                        ₹{order.totalPrice.toFixed(2)}
                       </p>
                     </div>
                   </div>
