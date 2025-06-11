@@ -18,6 +18,7 @@ export default function UserProfile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  console.log("selectedOrder====>", selectedOrder);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -466,7 +467,10 @@ export default function UserProfile() {
                 <div className="p-6 bg-[#7F614F]/20 rounded-t-md">
                   <p className="text-sm text-gray-500 mb-2">
                     Placed on{" "}
-                    {orders.find((order) => order.id === selectedOrder).date}
+                    {
+                      orders.find((order) => order.orderId === selectedOrder)
+                        .date
+                    }
                   </p>
                   <h2 className="text-lg font-medium mb-6">
                     Order #{selectedOrder}
@@ -480,8 +484,8 @@ export default function UserProfile() {
                   </h3>
                   <div className="relative md:pl-10">
                     <div className="absolute top-2 md:bottom-8 md:left-[47px] left-1.5 bottom-[42px] w-0.5 bg-gray-200"></div>
-                    {orders
-                      .find((order) => order.id === selectedOrder)
+                    {/* {orders
+                      .find((order) => order.orderId === selectedOrder)
                       .history.map((entry, index) => {
                         // Split the status into two parts at "Package"
                         const statusParts = entry.status.split(/(Package.*)/);
@@ -510,7 +514,7 @@ export default function UserProfile() {
                             </div>
                           </div>
                         );
-                      })}
+                      })} */}
                   </div>
                 </div>
               </div>
@@ -528,7 +532,7 @@ export default function UserProfile() {
                       <p className="text-sm font-medium">
                         ₹
                         {orders
-                          .find((order) => order.id === selectedOrder)
+                          .find((order) => order.orderId === selectedOrder)
                           .subtotal.toFixed(2)}
                       </p>
                     </div>
@@ -537,7 +541,7 @@ export default function UserProfile() {
                       <p className="text-sm font-medium">
                         ₹
                         {orders
-                          .find((order) => order.id === selectedOrder)
+                          .find((order) => order.orderId === selectedOrder)
                           .shipping.toFixed(2)}
                       </p>
                     </div>
@@ -546,7 +550,7 @@ export default function UserProfile() {
                       <p className="text-sm font-medium">
                         ₹
                         {orders
-                          .find((order) => order.id === selectedOrder)
+                          .find((order) => order.orderId === selectedOrder)
                           .tax.toFixed(2)}
                       </p>
                     </div>
@@ -555,7 +559,7 @@ export default function UserProfile() {
                       <p className="text-base font-bold">
                         ₹
                         {orders
-                          .find((order) => order.id === selectedOrder)
+                          .find((order) => order.orderId === selectedOrder)
                           .totalPrice.toFixed(2)}
                       </p>
                     </div>
@@ -570,20 +574,20 @@ export default function UserProfile() {
                   <div className="p-6">
                     <p className="text-sm font-medium">
                       {
-                        orders.find((order) => order.id === selectedOrder)
+                        orders.find((order) => order.orderId === selectedOrder)
                           .shippingAddress.name
                       }
                     </p>
                     <p className="text-sm text-gray-600">
                       {
-                        orders.find((order) => order.id === selectedOrder)
+                        orders.find((order) => order.orderId === selectedOrder)
                           .shippingAddress.address
                       }
                     </p>
                     <p className="text-sm text-gray-600 mt-2">
                       Phone:{" "}
                       {
-                        orders.find((order) => order.id === selectedOrder)
+                        orders.find((order) => order.orderId === selectedOrder)
                           .shippingAddress.phone
                       }
                     </p>
@@ -597,7 +601,7 @@ export default function UserProfile() {
                   </h3>
                   <div className="space-y-4 p-6">
                     {orders
-                      .find((order) => order.id === selectedOrder)
+                      .find((order) => order.orderId === selectedOrder)
                       .items.map((item, index) => (
                         <div key={index} className="flex items-center">
                           <img
@@ -614,7 +618,10 @@ export default function UserProfile() {
                             </p>
                           </div>
                           <p className="text-sm font-medium">
-                            ₹{item.discountedPrice.toFixed(2)}
+                            ₹
+                            {item.discountedPrice
+                              ? parseFloat(item.discountedPrice).toFixed(2)
+                              : "0.00"}
                           </p>
                         </div>
                       ))}
@@ -623,7 +630,7 @@ export default function UserProfile() {
                       <p className="text-base font-bold">
                         ₹
                         {orders
-                          .find((order) => order.id === selectedOrder)
+                          .find((order) => order.orderId === selectedOrder)
                           .totalPrice.toFixed(2)}
                       </p>
                     </div>
@@ -637,14 +644,14 @@ export default function UserProfile() {
               <div className="space-y-6">
                 {orders.map((order) => (
                   <div
-                    key={order.id}
+                    key={order.orderId}
                     className="border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50"
-                    onClick={() => handleOrderClick(order.id)}
+                    onClick={() => handleOrderClick(order.orderId)}
                   >
                     <div className="flex justify-between items-center rounded-t-md bg-[#7F614F]/20 p-6 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">
-                          Order #{order.id}
+                          Order #{order.orderId}
                         </p>
                         <p className="text-sm text-gray-500">
                           Placed on {order.date}
