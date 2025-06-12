@@ -84,11 +84,7 @@ const InstagramPostCard = ({ post }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <img
-        src={
-          post.image
-            ? `${import.meta.env.VITE_API_IMAGE_URL}${post.image}`
-            : '/placeholder.svg'
-        }
+        src={post.image ? `${import.meta.env.VITE_API_IMAGE_URL}${post.image}` : '/placeholder.svg'}
         alt={post.alt}
         className="w-full h-full object-cover transition-transform duration-500 ease-in-out"
         style={{
