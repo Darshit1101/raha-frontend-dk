@@ -1,73 +1,63 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import {
-  User,
-  ClipboardList,
-  Trash2,
-  LogOut,
-  Menu,
-  X,
-  Check,
-  MapPin,
-  Edit2,
-} from "lucide-react";
-import { api } from "axiosApi";
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { User, ClipboardList, Trash2, LogOut, Menu, X, Check, MapPin, Edit2 } from 'lucide-react';
+import { api } from 'axiosApi';
 
 export default function UserProfile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState('profile');
   const [selectedOrder, setSelectedOrder] = useState(null);
-  console.log("selectedOrder====>", selectedOrder);
+  console.log('selectedOrder====>', selectedOrder);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentAddressId, setCurrentAddressId] = useState(null);
   const fileInputRef = useRef(null);
-  let userID = JSON.parse(localStorage.getItem("userID"));
+  let userID = JSON.parse(localStorage.getItem('userID'));
 
   // Sample addresses data
   const [addresses, setAddresses] = useState([
     {
       id: 1,
-      name: "John Doe",
-      address: "123 Main Street, Apartment 4B",
-      city: "Mumbai",
-      state: "Maharashtra",
-      postalCode: "400001",
-      phone: "+91 98765 43210",
-      email: "john.doe@example.com",
+      name: 'John Doe',
+      address: '123 Main Street, Apartment 4B',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      postalCode: '400001',
+      phone: '+91 98765 43210',
+      email: 'john.doe@example.com'
     },
     {
       id: 2,
-      name: "Jane Smith",
-      address: "456 Park Avenue",
-      city: "Delhi",
-      state: "Delhi",
-      postalCode: "110001",
-      phone: "+91 87654 32109",
-      email: "jane.smith@example.com",
-    },
+      name: 'Jane Smith',
+      address: '456 Park Avenue',
+      city: 'Delhi',
+      state: 'Delhi',
+      postalCode: '110001',
+      phone: '+91 87654 32109',
+      email: 'jane.smith@example.com'
+    }
   ]);
 
   const [state, setState] = useState({
-    OrderDetail: [],
+    OrderDetail: []
   });
-  console.log("state.orderDetail====>", state.OrderDetail);
+  console.log('state.orderDetail====>', state.OrderDetail);
   //set data in state
   const changeNameValue = useCallback((obj) => {
     setState((prevState) => ({ ...prevState, ...obj }));
   }, []);
 
   const [newAddress, setNewAddress] = useState({
-    name: "",
-    address: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    phone: "",
-    email: "",
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    phone: '',
+    email: ''
   });
 
   const toggleSidebar = () => {
@@ -79,7 +69,7 @@ export default function UserProfile() {
     setSelectedOrder(null);
     setSelectedAddress(null);
     setSidebarOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOrderClick = (orderId) => {
@@ -120,13 +110,13 @@ export default function UserProfile() {
   const openAddPopup = () => {
     setIsEditing(false);
     setNewAddress({
-      name: "",
-      address: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      phone: "",
-      email: "",
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      phone: '',
+      email: ''
     });
     setIsPopupOpen(true);
   };
@@ -140,9 +130,7 @@ export default function UserProfile() {
     if (isEditing) {
       setAddresses(
         addresses.map((address) =>
-          address.id === currentAddressId
-            ? { ...newAddress, id: currentAddressId }
-            : address
+          address.id === currentAddressId ? { ...newAddress, id: currentAddressId } : address
         )
       );
     } else {
@@ -285,15 +273,18 @@ export default function UserProfile() {
         changeNameValue({ OrderDetail: response.data.data });
         // Optionally show a success message or update cart state here
       } catch (error) {
-        console.error(
-          "Error adding to cart:",
-          error.response?.data || error.message
-        );
+        console.error('Error adding to cart:', error.response?.data || error.message);
       }
     };
 
     fetchOrderByUserId();
   }, []);
+
+  //logout
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-20 py-6">
@@ -319,19 +310,17 @@ export default function UserProfile() {
               </div>
               <div>
                 <h2 className="text-[14px] font-medium">John Doe</h2>
-                <p className="text-[12px] text-gray-500">
-                  john.doe@example.com
-                </p>
+                <p className="text-[12px] text-gray-500">john.doe@example.com</p>
               </div>
             </div>
 
             <nav className="space-y-3">
               <button
-                onClick={() => handleTabChange("profile")}
+                onClick={() => handleTabChange('profile')}
                 className={`flex w-full items-center space-x-3 p-3 rounded-md ${
-                  activeTab === "profile"
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-700 hover:bg-gray-100"
+                  activeTab === 'profile'
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <User size={18} />
@@ -339,11 +328,11 @@ export default function UserProfile() {
               </button>
 
               <button
-                onClick={() => handleTabChange("trackOrder")}
+                onClick={() => handleTabChange('trackOrder')}
                 className={`flex w-full items-center space-x-3 p-3 rounded-md ${
-                  activeTab === "trackOrder"
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-700 hover:bg-gray-100"
+                  activeTab === 'trackOrder'
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <ClipboardList size={18} />
@@ -351,18 +340,21 @@ export default function UserProfile() {
               </button>
 
               <button
-                onClick={() => handleTabChange("address")}
+                onClick={() => handleTabChange('address')}
                 className={`flex w-full items-center space-x-3 p-3 rounded-md ${
-                  activeTab === "address"
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-700 hover:bg-gray-100"
+                  activeTab === 'address'
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <MapPin size={18} />
                 <span className="text-sm font-medium">Address</span>
               </button>
 
-              <button className="flex w-full md:mt-71 items-center border-t border-gray-200 justify-center space-x-3 p-3 hover:rounded-md text-gray-700 hover:bg-gray-100">
+              <button
+                className="flex w-full md:mt-71 items-center border-t border-gray-200 justify-center space-x-3 p-3 hover:rounded-md text-gray-700 hover:bg-gray-100"
+                onClick={handleLogout}
+              >
                 <LogOut size={18} />
                 <span className="text-sm font-medium">Log out</span>
               </button>
@@ -371,8 +363,8 @@ export default function UserProfile() {
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 ${selectedOrder ? "w-full" : ""}`}>
-          {activeTab === "profile" ? (
+        <main className={`flex-1 ${selectedOrder ? 'w-full' : ''}`}>
+          {activeTab === 'profile' ? (
             <div className="bg-white border border-gray-200 p-8 rounded-md">
               <div className="flex items-center space-x-4 mb-8">
                 <div className="w-16 h-16 rounded-full bg-gray-200 relative">
@@ -406,9 +398,7 @@ export default function UserProfile() {
               </div>
               <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    First Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                   <input
                     type="text"
                     placeholder="First Name"
@@ -416,9 +406,7 @@ export default function UserProfile() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Last Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                   <input
                     type="text"
                     placeholder="Last Name"
@@ -460,28 +448,20 @@ export default function UserProfile() {
                 </button>
               </form>
             </div>
-          ) : activeTab === "trackOrder" && selectedOrder ? (
+          ) : activeTab === 'trackOrder' && selectedOrder ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Order Tracking and History */}
               <div className="lg:col-span-2 bg-white border border-gray-200 rounded-md">
                 <div className="p-6 bg-[#7F614F]/20 rounded-t-md">
                   <p className="text-sm text-gray-500 mb-2">
-                    Placed on{" "}
-                    {
-                      orders.find((order) => order.orderId === selectedOrder)
-                        .date
-                    }
+                    Placed on {orders.find((order) => order.orderId === selectedOrder).date}
                   </p>
-                  <h2 className="text-lg font-medium mb-6">
-                    Order #{selectedOrder}
-                  </h2>
+                  <h2 className="text-lg font-medium mb-6">Order #{selectedOrder}</h2>
                 </div>
 
                 {/* Tracking History */}
                 <div className="p-6">
-                  <h3 className="text-base font-medium mb-4 md:pl-10">
-                    Tracking History
-                  </h3>
+                  <h3 className="text-base font-medium mb-4 md:pl-10">Tracking History</h3>
                   <div className="relative md:pl-10">
                     <div className="absolute top-2 md:bottom-8 md:left-[47px] left-1.5 bottom-[42px] w-0.5 bg-gray-200"></div>
                     {/* {orders
@@ -548,10 +528,7 @@ export default function UserProfile() {
                     <div className="flex justify-between">
                       <p className="text-sm text-gray-600">Tax</p>
                       <p className="text-sm font-medium">
-                        ₹
-                        {orders
-                          .find((order) => order.orderId === selectedOrder)
-                          .tax.toFixed(2)}
+                        ₹{orders.find((order) => order.orderId === selectedOrder).tax.toFixed(2)}
                       </p>
                     </div>
                     <div className="flex justify-between border-t border-gray-200 pt-3 rounded-md">
@@ -573,22 +550,19 @@ export default function UserProfile() {
                   </h3>
                   <div className="p-6">
                     <p className="text-sm font-medium">
-                      {
-                        orders.find((order) => order.orderId === selectedOrder)
-                          .shippingAddress.name
-                      }
+                      {orders.find((order) => order.orderId === selectedOrder).shippingAddress.name}
                     </p>
                     <p className="text-sm text-gray-600">
                       {
-                        orders.find((order) => order.orderId === selectedOrder)
-                          .shippingAddress.address
+                        orders.find((order) => order.orderId === selectedOrder).shippingAddress
+                          .address
                       }
                     </p>
                     <p className="text-sm text-gray-600 mt-2">
-                      Phone:{" "}
+                      Phone:{' '}
                       {
-                        orders.find((order) => order.orderId === selectedOrder)
-                          .shippingAddress.phone
+                        orders.find((order) => order.orderId === selectedOrder).shippingAddress
+                          .phone
                       }
                     </p>
                   </div>
@@ -605,23 +579,19 @@ export default function UserProfile() {
                       .items.map((item, index) => (
                         <div key={index} className="flex items-center">
                           <img
-                            src={`${import.meta.env.VITE_API_IMAGE_URL}/${
-                              item.image[0]
-                            }`}
+                            src={`${import.meta.env.VITE_API_IMAGE_URL}/${item.image[0]}`}
                             alt={item.name}
                             className="w-14 h-14 object-cover mr-4"
                           />
                           <div className="flex-1">
                             <h4 className="text-sm font-medium">{item.name}</h4>
-                            <p className="text-sm text-gray-500">
-                              Size: {item.size}
-                            </p>
+                            <p className="text-sm text-gray-500">Size: {item.size}</p>
                           </div>
                           <p className="text-sm font-medium">
                             ₹
                             {item.discountedPrice
                               ? parseFloat(item.discountedPrice).toFixed(2)
-                              : "0.00"}
+                              : '0.00'}
                           </p>
                         </div>
                       ))}
@@ -638,7 +608,7 @@ export default function UserProfile() {
                 </div>
               </div>
             </div>
-          ) : activeTab === "trackOrder" ? (
+          ) : activeTab === 'trackOrder' ? (
             <div className="bg-white border border-gray-200 p-8 rounded-md">
               <h2 className="text-lg font-medium mb-6">My Orders</h2>
               <div className="space-y-6">
@@ -650,20 +620,16 @@ export default function UserProfile() {
                   >
                     <div className="flex justify-between items-center rounded-t-md bg-[#7F614F]/20 p-6 mb-4">
                       <div>
-                        <p className="text-sm text-gray-500">
-                          Order #{order.orderId}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Placed on {order.date}
-                        </p>
+                        <p className="text-sm text-gray-500">Order #{order.orderId}</p>
+                        <p className="text-sm text-gray-500">Placed on {order.date}</p>
                       </div>
                       <p
                         className={`text-sm font-medium ${
-                          order.status === "Delivered"
-                            ? "text-green-600"
-                            : order.status === "Pending"
-                            ? "text-red-600"
-                            : "text-red-600"
+                          order.status === 'Delivered'
+                            ? 'text-green-600'
+                            : order.status === 'Pending'
+                            ? 'text-red-600'
+                            : 'text-red-600'
                         }`}
                       >
                         {order.status}
@@ -672,37 +638,31 @@ export default function UserProfile() {
                     {order.items.map((item, index) => (
                       <div key={index} className="flex items-center mb-4 p-6">
                         <img
-                          src={`${import.meta.env.VITE_API_IMAGE_URL}/${
-                            item.image[0]
-                          }`}
+                          src={`${import.meta.env.VITE_API_IMAGE_URL}/${item.image[0]}`}
                           alt={item.name}
                           className="w-14 h-14 object-cover mr-4"
                         />
                         <div className="flex-1">
                           <h3 className="text-sm font-medium">{item.name}</h3>
-                          <p className="text-sm text-gray-500">
-                            Size: {item.size}
-                          </p>
+                          <p className="text-sm text-gray-500">Size: {item.size}</p>
                         </div>
                         <p className="text-sm font-medium">
                           ₹
                           {item.discountedPrice
                             ? parseFloat(item.discountedPrice).toFixed(2)
-                            : "0.00"}
+                            : '0.00'}
                         </p>
                       </div>
                     ))}
                     <div className="flex justify-between items-center border-t p-6 border-gray-200 pt-4 rounded-md">
                       <p className="text-base font-medium">Total</p>
-                      <p className="text-base font-bold">
-                        ₹{order.totalPrice.toFixed(2)}
-                      </p>
+                      <p className="text-base font-bold">₹{order.totalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          ) : activeTab === "address" && selectedAddress ? (
+          ) : activeTab === 'address' && selectedAddress ? (
             <div className="bg-white border border-gray-200 p-6 rounded-md">
               <h2 className="text-lg font-medium mb-6">Address Details</h2>
               <div className="space-y-6">
@@ -711,36 +671,18 @@ export default function UserProfile() {
                     {addresses.find((addr) => addr.id === selectedAddress).name}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    {
-                      addresses.find((addr) => addr.id === selectedAddress)
-                        .address
-                    }
+                    {addresses.find((addr) => addr.id === selectedAddress).address}
                   </p>
                   <p className="text-sm text-gray-600">
-                    {addresses.find((addr) => addr.id === selectedAddress).city}
-                    ,{" "}
-                    {
-                      addresses.find((addr) => addr.id === selectedAddress)
-                        .state
-                    }{" "}
-                    {
-                      addresses.find((addr) => addr.id === selectedAddress)
-                        .postalCode
-                    }
+                    {addresses.find((addr) => addr.id === selectedAddress).city},{' '}
+                    {addresses.find((addr) => addr.id === selectedAddress).state}{' '}
+                    {addresses.find((addr) => addr.id === selectedAddress).postalCode}
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    Phone:{" "}
-                    {
-                      addresses.find((addr) => addr.id === selectedAddress)
-                        .phone
-                    }
+                    Phone: {addresses.find((addr) => addr.id === selectedAddress).phone}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Email:{" "}
-                    {
-                      addresses.find((addr) => addr.id === selectedAddress)
-                        .email
-                    }
+                    Email: {addresses.find((addr) => addr.id === selectedAddress).email}
                   </p>
                 </div>
                 <div className="border-t border-gray-200 pt-4 rounded-md">
@@ -753,7 +695,7 @@ export default function UserProfile() {
                 </div>
               </div>
             </div>
-          ) : activeTab === "address" ? (
+          ) : activeTab === 'address' ? (
             <div className="bg-white border border-gray-200 p-6 rounded-md">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg font-medium">My Addresses</h2>
@@ -766,27 +708,18 @@ export default function UserProfile() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {addresses.map((address) => (
-                  <div
-                    key={address.id}
-                    className="border border-gray-200 p-4 rounded-md"
-                  >
+                  <div key={address.id} className="border border-gray-200 p-4 rounded-md">
                     <div className="flex justify-between items-start">
                       <div
                         className="cursor-pointer flex-1"
                         onClick={() => handleAddressClick(address.id)}
                       >
-                        <h3 className="text-base font-medium mb-2">
-                          {address.name}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {address.address}
-                        </p>
+                        <h3 className="text-base font-medium mb-2">{address.name}</h3>
+                        <p className="text-sm text-gray-600">{address.address}</p>
                         <p className="text-sm text-gray-600">
                           {address.city}, {address.state} {address.postalCode}
                         </p>
-                        <p className="text-sm text-gray-600 mt-2">
-                          Phone: {address.phone}
-                        </p>
+                        <p className="text-sm text-gray-600 mt-2">Phone: {address.phone}</p>
                       </div>
                       <div className="flex space-x-3">
                         <button
@@ -823,7 +756,7 @@ export default function UserProfile() {
             <div className="bg-white p-6 rounded-md w-full max-w-md">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg font-medium">
-                  {isEditing ? "Edit Address" : "Add New Address"}
+                  {isEditing ? 'Edit Address' : 'Add New Address'}
                 </h2>
                 <button
                   onClick={() => setIsPopupOpen(false)}
@@ -834,9 +767,7 @@ export default function UserProfile() {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                   <input
                     type="text"
                     name="name"
@@ -847,9 +778,7 @@ export default function UserProfile() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Address
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                   <input
                     type="text"
                     name="address"
@@ -861,9 +790,7 @@ export default function UserProfile() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      City
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
                     <input
                       type="text"
                       name="city"
@@ -874,9 +801,7 @@ export default function UserProfile() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      State
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
                     <input
                       type="text"
                       name="state"
@@ -930,7 +855,7 @@ export default function UserProfile() {
                   onClick={handleSaveAddress}
                   className="w-full  bg-[#7F614F] rounded-md border hover:bg-white hover:text-[#7F614F] text-white py-3 px-6 focus:outline-none  transition-colors"
                 >
-                  {isEditing ? "Save Changes" : "Add Address"}
+                  {isEditing ? 'Save Changes' : 'Add Address'}
                 </button>
               </div>
             </div>

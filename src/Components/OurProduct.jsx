@@ -1,24 +1,21 @@
-"use client";
+'use client';
 
-import { useNavigate } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
-import { use, useEffect, useState } from "react";
-import ProductCard from "./ProductCard";
-import sc1 from "../assets/sc1.png";
-import { api } from "axiosApi";
+import { useNavigate } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
+import { use, useEffect, useState } from 'react';
+import ProductCard from './ProductCard';
+import sc1 from '../assets/sc1.png';
+import { api } from 'axiosApi';
 
 const OurProduct = (props) => {
   const { state, changeNameValue } = props;
 
   const navigate = useNavigate();
-  const [categoryName, setcategoryName] = useState({ name: "all" });
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryName, setcategoryName] = useState({ name: 'all' });
+  const [categoryId, setCategoryId] = useState('');
 
   // const categories = ["all", "hair oil", "shampoo", "hair pack"];
-  const categories = [
-    { name: "all" },
-    ...state.AllCategories.map((cat) => cat),
-  ];
+  const categories = [{ name: 'all' }, ...state.AllCategories.map((cat) => cat)];
 
   // const allProducts = [
   //   {
@@ -75,11 +72,23 @@ const OurProduct = (props) => {
   //   },
   // ];
 
-  const allProductsArray = state.AllProducts;
-  const allProducts = allProductsArray.slice(-4);
+  // const allProductsArray = state.AllProducts;
+  // const allProducts = allProductsArray.slice(-4);
 
-  const filteredProducts =
-    categoryName.name === "all" ? allProducts : allProducts;
+  // const filteredProducts = categoryName.name === 'all' ? allProducts : allProducts;
+
+  const allProductsArray = state.AllProducts;
+
+  let topProducts = [];
+  let bottomProducts = [];
+
+  if (categoryName.name === 'all') {
+    topProducts = allProductsArray.slice(-4); // latest 4
+    bottomProducts = allProductsArray.slice(0, -4); // rest
+  } else {
+    topProducts = allProductsArray;
+    bottomProducts = [];
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +97,12 @@ const OurProduct = (props) => {
         const response = await api.get(`/getProductsByCategory/${categoryId}`);
         changeNameValue({ AllProducts: response.data.data });
       } catch (error) {
-        console.error("Error fetching products:", error);
+        if (error.response && error.response.status === 404) {
+          // No products found — clear AllProducts
+          changeNameValue({ AllProducts: [] });
+        } else {
+          console.error('Error fetching products:', error);
+        }
       }
     };
 
@@ -97,14 +111,14 @@ const OurProduct = (props) => {
 
   const handleCategory = (cat) => {
     setCategoryId(cat.categoryId);
-    if (cat.name === "all") {
-      setCategoryId(""); // clear categoryId to skip API
+    if (cat.name === 'all') {
+      setCategoryId(''); // clear categoryId to skip API
       const fetchData = async () => {
         try {
-          const response = await api.get("/getAllProducts");
+          const response = await api.get('/getAllProducts');
           changeNameValue({ AllProducts: response.data.data });
         } catch (error) {
-          console.error("Error fetching products:", error);
+          console.error('Error fetching products:', error);
         }
       };
 
@@ -115,7 +129,7 @@ const OurProduct = (props) => {
   };
 
   const handleNavigateHome = () => {
-    navigate("/");
+    navigate('/');
     window.scrollTo(0, 0);
   };
 
@@ -130,7 +144,7 @@ const OurProduct = (props) => {
               className="cursor-pointer hover:text-black transition-colors"
             >
               Home
-            </span>{" "}
+            </span>{' '}
             / Shop
           </nav>
 
@@ -148,8 +162,8 @@ const OurProduct = (props) => {
                 }}
                 className={`rounded-full border px-6 py-2 text-sm font-medium ${
                   categoryName === cat
-                    ? "border-[#7f614f] text-[#7f614f]"
-                    : "border-gray-300 text-gray-400"
+                    ? 'border-[#7f614f] text-[#7f614f]'
+                    : 'border-gray-300 text-gray-400'
                 }`}
               >
                 {cat.name?.toUpperCase()}
@@ -159,7 +173,7 @@ const OurProduct = (props) => {
 
           {/* Product Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-4">
-            {filteredProducts.map((product) => (
+            {topProducts.map((product) => (
               <div key={product.productId} className="flex">
                 <ProductCard product={product} />
               </div>
@@ -174,20 +188,22 @@ const OurProduct = (props) => {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage: `url(${sc1})`,
-            backgroundRepeat: "repeat-x",
-            backgroundAttachment: "fixed",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundRepeat: 'repeat-x',
+            backgroundAttachment: 'fixed',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
           }}
         ></div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 md:p-16 md:gap-4">
-        {filteredProducts.map((product) => (
-          <div key={product.productId} className="flex">
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
+      {categoryName.name === 'all' && bottomProducts.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 md:p-16 md:gap-4">
+          {bottomProducts.map((product) => (
+            <div key={product.productId} className="flex">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
