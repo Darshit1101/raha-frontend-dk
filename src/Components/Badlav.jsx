@@ -1,6 +1,7 @@
 import badlavbg from "../assets/badlavbg.png";
 import t1 from "../assets/t1.png";
 import t2 from "../assets/t2.png";
+import {memo} from "react";
 
 const Badlav = () => {
   return (
@@ -109,4 +110,4 @@ const Badlav = () => {
   );
 };
 
-export default Badlav;
+export default memo(Badlav);
