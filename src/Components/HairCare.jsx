@@ -3,6 +3,7 @@
 import { useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import ProductCard from "./ProductCard";
+import {memo} from "react";
 
 const HairCare = (props) => {
   const { state, changeNameValue } = props;
@@ -123,4 +124,4 @@ const HairCare = (props) => {
   );
 };
 
-export default HairCare;
+export default memo(HairCare);
