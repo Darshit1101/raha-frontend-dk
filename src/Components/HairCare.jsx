@@ -105,7 +105,6 @@ const HairCare = (props) => {
       {/* Bottom background image section - fixed when scrolling */}
       <div className="relative md:h-[600px] h-[400px] w-full items-center justify-center overflow-hidden">
         {/* Embedded YouTube Video */}
-        {/* Embedded YouTube Video */}
         <div className="absolute inset-0 z-0 md:p-20 p-5 ">
           <iframe
             width="560"
